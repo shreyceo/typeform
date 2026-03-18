@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get in Touch</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --text-primary: #111110;
+    --text-secondary: #6b6b67;
+    --accent: #1a1a18;
+    --accent-light: #f0efeb;
+    --border: #e5e4df;
+    --progress-fill: #111110;
+    --answer-bg: #f5f4f0;
+    --answer-hover: #eeede8;
+    --green: #2d6a4f;
+    --transition: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-primary);
+    overflow: hidden;
+  }
+
+  /* ── Progress Bar ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--progress-fill);
+    transition: width 0.5s var(--transition);
+    width: 0%;
+  }
+
+  /* ── Top Nav ── */
+  .top-nav {
+    position: fixed;
+    top: 16px; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px;
+    z-index: 90;
+  }
+  .brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+  }
+  .step-counter {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 300;
+  }
+
+  /* ── Slide Wrapper ── */
+  .slides-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    position: absolute;
+    width: 100%;
+    max-width: 680px;
+    padding: 0 32px;
+    opacity: 0;
+    transform: translateY(40px);
+    pointer-events: none;
+    transition: opacity 0.45s var(--transition), transform 0.45s var(--transition);
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+  .slide.exit-up {
+    opacity: 0;
+    transform: translateY(-40px);
+    pointer-events: none;
+  }
+
+  /* ── Question ── */
+  .q-number {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .q-number svg { width: 14px; height: 14px; }
+
+  .q-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(26px, 4vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .q-subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+
+  /* ── Input ── */
+  .input-wrap {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .input-wrap input,
+  .input-wrap select,
+  .input-wrap textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border);
+    padding: 12px 0 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+  }
+  .input-wrap textarea {
+    resize: none;
+    height: 80px;
+    line-height: 1.5;
+    font-size: 18px;
+  }
+  .input-wrap input::placeholder,
+  .input-wrap textarea::placeholder {
+    color: #c5c4be;
+  }
+  .input-wrap input:focus,
+  .input-wrap select:focus,
+  .input-wrap textarea:focus {
+    border-color: var(--text-primary);
+  }
+  .input-underline {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--text-primary);
+    transition: width 0.3s var(--transition);
+  }
+  .input-wrap input:focus ~ .input-underline,
+  .input-wrap textarea:focus ~ .input-underline {
+    width: 100%;
+  }
+
+  /* ── Choice Buttons ── */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .choice-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--answer-bg);
+    border: 1.5px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s, transform 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-primary);
+    text-align: left;
+  }
+  .choice-btn:hover {
+    background: var(--answer-hover);
+    transform: translateX(4px);
+  }
+  .choice-btn.selected {
+    background: var(--text-primary);
+    color: white;
+    border-color: var(--text-primary);
+  }
+  .choice-letter {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    background: white;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+  .choice-btn.selected .choice-letter {
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.3);
+    color: white;
+  }
+
+  /* ── OK Button ── */
+  .ok-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    background: var(--text-primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .ok-btn:hover { background: #333330; transform: translateY(-1px); }
+  .ok-btn:active { transform: translateY(0); }
+  .ok-btn svg { width: 16px; height: 16px; }
+
+  .hint {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 300;
+  }
+
+  /* ── Error ── */
+  .error-msg {
+    font-size: 13px;
+    color: #c0392b;
+    margin-top: -20px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+
+  /* ── Welcome Slide ── */
+  .welcome-slide .q-title {
+    font-size: clamp(32px, 5vw, 52px);
+    margin-bottom: 16px;
+  }
+  .welcome-slide .q-subtitle {
+    font-size: 17px;
+    margin-bottom: 40px;
+  }
+  .start-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    background: var(--text-primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.15s;
+  }
+  .start-btn:hover { background: #333330; transform: translateY(-2px); }
+  .start-btn svg { width: 18px; height: 18px; }
+
+  /* ── Thank You ── */
+  .thankyou-slide {
+    text-align: center;
+  }
+  .check-circle {
+    width: 64px; height: 64px;
+    background: #eaf5f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+  }
+  .check-circle svg { width: 32px; height: 32px; color: var(--green); }
+  .thankyou-slide .q-title { font-size: clamp(28px, 4vw, 42px); }
+  .thankyou-slide .q-subtitle { max-width: 420px; margin: 0 auto 40px; }
+
+  /* ── Nav arrows ── */
+  .nav-arrows {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    display: flex;
+    gap: 8px;
+    z-index: 90;
+  }
+  .nav-arrow {
+    width: 40px; height: 40px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.18s, border-color 0.18s;
+    color: var(--text-primary);
+  }
+  .nav-arrow:hover { background: var(--accent-light); border-color: #c5c4be; }
+  .nav-arrow:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+  .nav-arrow svg { width: 16px; height: 16px; }
+
+  /* ── Submitting overlay ── */
+  .submitting-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(250,250,248,0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .submitting-overlay.show { opacity: 1; pointer-events: all; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--text-primary);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-bottom: 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .submitting-overlay p { font-size: 15px; color: var(--text-secondary); font-weight: 300; }
+
+  /* ── Config banner ── */
+  .config-banner {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff8e1;
+    border-top: 1px solid #ffe082;
+    padding: 10px 24px;
+    font-size: 13px;
+    color: #7a6000;
+    text-align: center;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .config-banner strong { font-weight: 600; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 0 20px; }
+    .slide { padding: 0 20px; }
+    .nav-arrows { bottom: 20px; right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CONFIG: Replace with your Google Apps Script Web App URL -->
+<script>
+  const SHEET_URL = "https://script.google.com/macros/s/AKfycbwF_O97-pvYRKmb0JBTV6Ef0BAMKEXSex7wApxDbI7TC3znAot1BrBBiSOwzJrKnlA4Ew/exec";
+</script>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="top-nav">
+  <span class="brand">LeadForm</span>
+  <span class="step-counter" id="stepCounter"></span>
+</nav>
+
+<div class="slides-container" id="slidesContainer">
+
+  <!-- SLIDE 0: Welcome -->
+  <div class="slide welcome-slide active" data-index="0">
+    <div class="q-number">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Welcome
+    </div>
+    <h1 class="q-title">Let's talk<br><em>business.</em></h1>
+    <p class="q-subtitle">Answer a few quick questions and we'll get back to you within 24 hours. Takes less than 2 minutes.</p>
+    <button class="start-btn" onclick="startForm()">
+      Start
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- SLIDE 1: Name -->
+  <div class="slide" data-index="1">
+    <div class="q-number">01 →</div>
+    <h2 class="q-title">What's your name?</h2>
+    <p class="q-subtitle">First and last name, please.</p>
+    <div class="input-wrap">
+      <input type="text" id="field-name" placeholder="Jane Smith" autocomplete="name" />
+      <div class="input-underline"></div>
+    </div>
+    <div class="error-msg" id="err-name">Please enter your full name.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      OK
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 2: Email -->
+  <div class="slide" data-index="2">
+    <div class="q-number">02 →</div>
+    <h2 class="q-title">Your work email?</h2>
+    <p class="q-subtitle">We'll use this to send you a response.</p>
+    <div class="input-wrap">
+      <input type="email" id="field-email" placeholder="jane@company.com" autocomplete="email" />
+      <div class="input-underline"></div>
+    </div>
+    <div class="error-msg" id="err-email">Please enter a valid email address.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      OK
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 3: Company -->
+  <div class="slide" data-index="3">
+    <div class="q-number">03 →</div>
+    <h2 class="q-title">What company<br>are you from?</h2>
+    <p class="q-subtitle">Include your role if you'd like.</p>
+    <div class="input-wrap">
+      <input type="text" id="field-company" placeholder="Acme Inc — Head of Growth" />
+      <div class="input-underline"></div>
+    </div>
+    <div class="error-msg" id="err-company">Please enter your company name.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      OK
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 4: Interest (choice) -->
+  <div class="slide" data-index="4">
+    <div class="q-number">04 →</div>
+    <h2 class="q-title">What are you most interested in?</h2>
+    <p class="q-subtitle">Choose the option that fits best.</p>
+    <div class="choices" id="interest-choices">
+      <button class="choice-btn" onclick="selectChoice(this, 'interest')" data-value="Product Demo">
+        <span class="choice-letter">A</span> Product Demo
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this, 'interest')" data-value="Pricing & Plans">
+        <span class="choice-letter">B</span> Pricing &amp; Plans
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this, 'interest')" data-value="Partnership">
+        <span class="choice-letter">C</span> Partnership
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this, 'interest')" data-value="General Inquiry">
+        <span class="choice-letter">D</span> General Inquiry
+      </button>
+    </div>
+    <div class="error-msg" id="err-interest">Please select an option.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      OK
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+  </div>
+
+  <!-- SLIDE 5: Message -->
+  <div class="slide" data-index="5">
+    <div class="q-number">05 →</div>
+    <h2 class="q-title">Anything else<br>you'd like us to know?</h2>
+    <p class="q-subtitle">Optional — but the more context the better.</p>
+    <div class="input-wrap">
+      <textarea id="field-message" placeholder="Tell us about your use case, timeline, or any specific questions…"></textarea>
+      <div class="input-underline"></div>
+    </div>
+    <button class="ok-btn" onclick="submitForm()">
+      Submit
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+
+  <!-- SLIDE 6: Thank You -->
+  <div class="slide thankyou-slide" data-index="6">
+    <div class="check-circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="#2d6a4f"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2 class="q-title">You're all set!</h2>
+    <p class="q-subtitle">Thanks for reaching out. We've got your details and will be in touch within 24 hours.</p>
+    <button class="start-btn" onclick="resetForm()" style="background:#2d6a4f">
+      Submit another response
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+    </button>
+  </div>
+
+</div>
+
+<!-- Nav Arrows -->
+<div class="nav-arrows" id="navArrows" style="display:none">
+  <button class="nav-arrow" id="btnUp" onclick="prevSlide()" title="Previous">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <button class="nav-arrow" id="btnDown" onclick="nextSlide()" title="Next">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+</div>
+
+<!-- Submitting overlay -->
+<div class="submitting-overlay" id="submittingOverlay">
+  <div class="spinner"></div>
+  <p>Sending your response…</p>
+</div>
+
+<!-- Config banner (shown when URL not set) -->
+<div class="config-banner" id="configBanner" style="display:none">
+  ⚙️ <strong>Setup required:</strong> Replace <code>YOUR_GOOGLE_APPS_SCRIPT_URL_HERE</code> in the &lt;script&gt; tag with your Apps Script Web App URL. <a href="#" onclick="document.getElementById('configBanner').style.display='none'; return false;" style="color:#5a4500; margin-left:8px;">Dismiss</a>
+</div>
+
+<script>
+  // ── State ──
+  const TOTAL_QUESTIONS = 5; // slides 1–5
+  let currentSlide = 0;
+  const selectedChoices = {};
+  const slides = document.querySelectorAll('.slide');
+
+  // Show config banner if URL not set
+  if (SHEET_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+    document.getElementById('configBanner').style.display = 'flex';
+  }
+
+  // ── Navigation ──
+  function goToSlide(next) {
+    const current = document.querySelector('.slide.active');
+    current.classList.remove('active');
+    current.classList.add('exit-up');
+    setTimeout(() => current.classList.remove('exit-up'), 500);
+
+    slides[next].classList.add('active');
+    currentSlide = next;
+
+    updateUI();
+    const firstInput = slides[next].querySelector('input, textarea');
+    if (firstInput) setTimeout(() => firstInput.focus(), 300);
+  }
+
+  function updateUI() {
+    const fill = document.getElementById('progressFill');
+    const counter = document.getElementById('stepCounter');
+    const navArrows = document.getElementById('navArrows');
+    const btnUp = document.getElementById('btnUp');
+    const btnDown = document.getElementById('btnDown');
+
+    if (currentSlide === 0 || currentSlide === 6) {
+      fill.style.width = currentSlide === 6 ? '100%' : '0%';
+      counter.textContent = '';
+      navArrows.style.display = 'none';
+    } else {
+      const pct = ((currentSlide) / TOTAL_QUESTIONS) * 100;
+      fill.style.width = pct + '%';
+      counter.textContent = currentSlide + ' / ' + TOTAL_QUESTIONS;
+      navArrows.style.display = 'flex';
+      btnUp.disabled = currentSlide <= 1;
+      btnDown.disabled = currentSlide >= TOTAL_QUESTIONS;
+    }
+  }
+
+  function startForm() {
+    goToSlide(1);
+  }
+
+  function prevSlide() {
+    if (currentSlide > 1) goToSlide(currentSlide - 1);
+  }
+
+  function nextSlide() {
+    if (!validateCurrent()) return;
+    if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1);
+  }
+
+  // ── Validation ──
+  function validateCurrent() {
+    clearErrors();
+    if (currentSlide === 1) {
+      const val = document.getElementById('field-name').value.trim();
+      if (val.length < 2 || !val.includes(' ')) {
+        showError('err-name'); return false;
+      }
+    }
+    if (currentSlide === 2) {
+      const val = document.getElementById('field-email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        showError('err-email'); return false;
+      }
+    }
+    if (currentSlide === 3) {
+      const val = document.getElementById('field-company').value.trim();
+      if (val.length < 2) { showError('err-company'); return false; }
+    }
+    if (currentSlide === 4) {
+      if (!selectedChoices['interest']) { showError('err-interest'); return false; }
+    }
+    return true;
+  }
+
+  function showError(id) {
+    const el = document.getElementById(id);
+    if (el) { el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 3000); }
+  }
+  function clearErrors() {
+    document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+  }
+
+  // ── Choices ──
+  function selectChoice(btn, field) {
+    const group = btn.closest('.choices');
+    group.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedChoices[field] = btn.dataset.value;
+  }
+
+  // ── Submit via hidden iframe (bypasses CORS) ──
+  function submitViaIframe(payload) {
+    return new Promise((resolve) => {
+      // Create a hidden iframe as the form target
+      const iframe = document.createElement('iframe');
+      iframe.name = 'hidden_iframe';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      // Build a hidden form that posts to the Apps Script URL
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = SHEET_URL;
+      form.target = 'hidden_iframe';
+      form.style.display = 'none';
+
+      // Append all fields as hidden inputs
+      Object.entries(payload).forEach(([key, val]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = val;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+
+      // Resolve after iframe loads (submission complete)
+      iframe.onload = () => {
+        document.body.removeChild(form);
+        document.body.removeChild(iframe);
+        resolve();
+      };
+
+      // Fallback: resolve after 4s even if onload doesn't fire
+      setTimeout(resolve, 4000);
+
+      form.submit();
+    });
+  }
+
+  async function submitForm() {
+    const overlay = document.getElementById('submittingOverlay');
+    overlay.classList.add('show');
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      name: document.getElementById('field-name').value.trim(),
+      email: document.getElementById('field-email').value.trim(),
+      company: document.getElementById('field-company').value.trim(),
+      interest: selectedChoices['interest'] || '',
+      message: document.getElementById('field-message').value.trim(),
+    };
+
+    await submitViaIframe(payload);
+
+    overlay.classList.remove('show');
+    goToSlide(6);
+  }
+
+  // ── Reset ──
+  function resetForm() {
+    document.getElementById('field-name').value = '';
+    document.getElementById('field-email').value = '';
+    document.getElementById('field-company').value = '';
+    document.getElementById('field-message').value = '';
+    document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+    Object.keys(selectedChoices).forEach(k => delete selectedChoices[k]);
+    goToSlide(0);
+  }
+
+  // ── Keyboard: Enter to advance ──
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && currentSlide > 0 && currentSlide < 6) {
+      const tag = document.activeElement.tagName;
+      if (tag === 'TEXTAREA') return;
+      e.preventDefault();
+      if (currentSlide === 5) submitForm();
+      else nextSlide();
+    }
+  });
+
+  updateUI();
+</script>
+</body>
+</html>
