@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get in Touch</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f0e8;
+  --text-primary: #1a1708;
+  --text-secondary: #6b6540;
+  --border: #d8d0bc;
+  --progress-fill: #1a1708;
+  --answer-bg: #ede8dc;
+  --answer-hover: #e4ddd0;
+  --green: #2d6a4f;
+  --red: #c0392b;
+  --surface: rgba(245,240,232,0.85);
+  --btn-bg: #1a1708;
+  --btn-color: #fff;
+  --nav-bg: rgba(245,240,232,0.7);
+  --transition: cubic-bezier(0.4,0,0.2,1);
+  --overlay-bg: rgba(245,240,232,0.92);
+}
+[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --text-primary: #f0ebe0;
+  --text-secondary: #9a9070;
+  --border: #2e2b22;
+  --progress-fill: #f0ebe0;
+  --answer-bg: #1c1b16;
+  --answer-hover: #252318;
+  --surface: rgba(15,15,15,0.85);
+  --btn-bg: #f0ebe0;
+  --btn-color: #1a1708;
+  --nav-bg: rgba(15,15,15,0.7);
+  --overlay-bg: rgba(15,15,15,0.92);
+}
+
+/* ── Custom Cursor ── */
+* { cursor: none !important; }
+.cursor-dot {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--text-primary); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, background 0.3s;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 2px solid rgba(26,23,8,0.35); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width 0.25s, height 0.25s, border-color 0.25s, background 0.25s;
+}
+[data-theme="dark"] .cursor-ring { border-color: rgba(240,235,224,0.35); }
+.cursor-ring.hovering { width: 52px; height: 52px; border-color: var(--text-primary); background: rgba(26,23,8,0.06); }
+.cursor-dot.clicking { transform: translate(-50%,-50%) scale(0.5); }
+
+/* ── Animated gradient BG ── */
+html, body { height: 100%; overflow: hidden; font-family: 'DM Sans', sans-serif; color: var(--text-primary); transition: background 0.6s, color 0.4s; }
+
+.gradient-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: var(--bg);
+  transition: background 0.6s;
+}
+.gradient-bg::before {
+  content: '';
+  position: absolute; inset: -50%;
+  background: 
+    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(212,185,130,0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 80% 70%, rgba(180,210,170,0.3) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 55% at 60% 20%, rgba(200,170,220,0.25) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 40% at 30% 80%, rgba(170,200,220,0.3) 0%, transparent 65%);
+  animation: meshFloat 14s ease-in-out infinite alternate;
+}
+[data-theme="dark"] .gradient-bg::before {
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(80,60,20,0.5) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 80% 70%, rgba(20,60,40,0.4) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 55% at 60% 20%, rgba(50,20,70,0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 40% at 30% 80%, rgba(20,40,70,0.4) 0%, transparent 65%);
+}
+@keyframes meshFloat {
+  0%   { transform: translate(0,0) rotate(0deg); }
+  33%  { transform: translate(3%,2%) rotate(2deg); }
+  66%  { transform: translate(-2%,3%) rotate(-1.5deg); }
+  100% { transform: translate(1%,-2%) rotate(1deg); }
+}
+
+/* Paper texture */
+.grain-overlay {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.08'/%3E%3C/svg%3E");
+  opacity: 0.3; mix-blend-mode: multiply;
+}
+[data-theme="dark"] .grain-overlay { mix-blend-mode: screen; opacity: 0.08; }
+
+/* ── Progress Bar ── */
+.progress-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--border); z-index: 100; transition: background 0.4s;
+}
+.progress-fill {
+  height: 100%; background: var(--progress-fill);
+  transition: width 0.5s var(--transition), background 0.4s;
+  width: 0%;
+}
+
+/* ── Step Labels ── */
+.step-labels {
+  position: fixed; top: 8px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 0; z-index: 101; align-items: center;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.step-label {
+  padding: 2px 8px; color: var(--text-secondary);
+  transition: color 0.3s, font-weight 0.3s;
+  opacity: 0.5;
+}
+.step-label.active { color: var(--text-primary); opacity: 1; font-weight: 700; }
+.step-label.done { opacity: 0.35; }
+.step-sep { color: var(--border); font-size: 10px; opacity: 0.6; }
+
+/* ── Top Nav ── */
+.top-nav {
+  position: fixed; top: 22px; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 32px; z-index: 90;
+}
+.brand {
+  font-family: 'Playfair Display', serif; font-size: 18px;
+  font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary);
+  transition: color 0.4s;
+}
+
+/* Dark mode toggle */
+.theme-toggle {
+  width: 44px; height: 24px; border-radius: 12px;
+  background: var(--answer-bg); border: 1.5px solid var(--border);
+  position: relative; transition: background 0.3s, border-color 0.3s;
+  flex-shrink: 0;
+}
+.theme-toggle-knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--text-primary);
+  transition: transform 0.3s var(--transition), background 0.3s;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+}
+[data-theme="dark"] .theme-toggle-knob { transform: translateX(20px); }
+
+/* Social proof */
+.social-proof {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  background: var(--answer-bg); border: 1px solid var(--border);
+  border-radius: 100px; padding: 6px 16px;
+  font-size: 12px; color: var(--text-secondary); font-weight: 500;
+  z-index: 90; white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+  transition: background 0.4s, border-color 0.4s, color 0.4s;
+  backdrop-filter: blur(8px);
+}
+.social-proof .avatars { display: flex; }
+.social-proof .avatar {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid var(--bg);
+  margin-left: -6px; font-size: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: white;
+}
+.social-proof .avatars .avatar:first-child { margin-left: 0; }
+
+/* ── Slides ── */
+.slides-container {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+.slide {
+  position: absolute; width: 100%; max-width: 680px;
+  padding: 0 32px; opacity: 0;
+  transform: translateY(40px); pointer-events: none;
+  transition: opacity 0.45s var(--transition), transform 0.45s var(--transition);
+}
+.slide.active { opacity: 1; transform: translateY(0); pointer-events: all; }
+.slide.exit-up { opacity: 0; transform: translateY(-40px); pointer-events: none; }
+
+/* ── Question text ── */
+.q-number {
+  font-size: 12px; font-weight: 700; color: var(--text-secondary);
+  letter-spacing: 1.2px; text-transform: uppercase;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+  transition: color 0.4s;
+}
+.q-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 4vw, 40px); font-weight: 900;
+  line-height: 1.15; letter-spacing: -0.5px;
+  color: var(--text-primary); margin-bottom: 8px;
+  transition: color 0.4s;
+}
+.q-subtitle {
+  font-size: 15px; color: var(--text-secondary);
+  font-weight: 400; margin-bottom: 32px; line-height: 1.5;
+  transition: color 0.4s;
+}
+
+/* ── Inputs ── */
+.input-wrap { position: relative; margin-bottom: 8px; }
+.input-wrap input, .input-wrap textarea {
+  width: 100%; background: transparent; border: none;
+  border-bottom: 2px solid var(--border);
+  padding: 12px 36px 14px 0;
+  font-family: 'DM Sans', sans-serif; font-size: 20px;
+  font-weight: 400; color: var(--text-primary); outline: none;
+  transition: border-color 0.2s, color 0.4s; border-radius: 0;
+  -webkit-appearance: none; appearance: none;
+}
+.input-wrap textarea { resize: none; height: 80px; line-height: 1.5; font-size: 18px; padding-right: 0; }
+.input-wrap input::placeholder, .input-wrap textarea::placeholder { color: var(--border); }
+.input-wrap input:focus, .input-wrap textarea:focus { border-color: var(--text-primary); }
+.input-underline {
+  position: absolute; bottom: 0; left: 0; height: 2px; width: 0;
+  background: var(--text-primary); transition: width 0.3s var(--transition);
+}
+.input-wrap input:focus ~ .input-underline,
+.input-wrap textarea:focus ~ .input-underline { width: 100%; }
+
+/* Email validation icon */
+.input-icon {
+  position: absolute; right: 4px; bottom: 16px;
+  font-size: 18px; opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: scale(0.5);
+}
+.input-icon.show { opacity: 1; transform: scale(1); }
+
+/* Privacy note */
+.privacy-note {
+  font-size: 11px; color: var(--text-secondary); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 5px; opacity: 0.7;
+}
+.privacy-note svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+/* ── Choice Buttons ── */
+.choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.choice-btn {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; background: var(--answer-bg);
+  border: 1.5px solid transparent; border-radius: 10px;
+  transition: background 0.18s, border-color 0.18s, transform 0.15s, color 0.3s;
+  font-family: 'DM Sans', sans-serif; font-size: 15px;
+  font-weight: 400; color: var(--text-primary); text-align: left;
+}
+.choice-btn:hover { background: var(--answer-hover); transform: translateX(4px); }
+.choice-btn.selected { background: var(--btn-bg); color: var(--btn-color); border-color: var(--btn-bg); }
+.choice-letter {
+  width: 26px; height: 26px; border-radius: 6px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; flex-shrink: 0;
+  color: var(--text-secondary);
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.choice-btn.selected .choice-letter { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); color: white; }
+
+/* ── OK / Start Buttons ── */
+.ok-btn, .start-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 24px; background: var(--btn-bg); color: var(--btn-color);
+  border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  transition: opacity 0.18s, transform 0.15s, background 0.4s, color 0.4s;
+  letter-spacing: 0.2px; position: relative; overflow: hidden;
+}
+.start-btn { padding: 16px 32px; font-size: 16px; border-radius: 12px; }
+.ok-btn:hover, .start-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.ok-btn svg, .start-btn svg { width: 16px; height: 16px; }
+.start-btn svg { width: 18px; height: 18px; }
+.hint { display: inline-block; margin-left: 12px; font-size: 12px; color: var(--text-secondary); }
+
+/* ── Error ── */
+.error-msg { font-size: 13px; color: var(--red); margin-top: 4px; margin-bottom: 12px; display: none; }
+.error-msg.show { display: block; }
+
+/* ── Welcome ── */
+.welcome-slide .q-title { font-size: clamp(32px, 5vw, 58px); font-weight: 900; margin-bottom: 16px; }
+.welcome-slide .q-subtitle { font-size: 17px; margin-bottom: 32px; }
+.welcome-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--answer-bg); border: 1px solid var(--border);
+  border-radius: 100px; padding: 5px 12px;
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  margin-bottom: 20px; letter-spacing: 0.3px;
+  transition: background 0.4s, border-color 0.4s, color 0.4s;
+}
+.welcome-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+/* ── Thank You ── */
+.thankyou-slide { text-align: center; }
+.check-circle {
+  width: 72px; height: 72px; background: rgba(45,106,79,0.12);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 28px;
+}
+.check-circle svg { width: 36px; height: 36px; color: var(--green); }
+.thankyou-slide .q-title { font-size: clamp(28px, 4vw, 42px); }
+.thankyou-slide .q-subtitle { max-width: 420px; margin: 0 auto 32px; }
+.lead-score-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border-radius: 100px;
+  font-size: 13px; font-weight: 700; margin-bottom: 32px;
+  border: 1.5px solid currentColor;
+}
+.lead-score-badge.hot { color: #e74c3c; background: rgba(231,76,60,0.08); }
+.lead-score-badge.warm { color: #e67e22; background: rgba(230,126,34,0.08); }
+.lead-score-badge.cold { color: #3498db; background: rgba(52,152,219,0.08); }
+
+/* ── Nav Arrows ── */
+.nav-arrows {
+  position: fixed; bottom: 32px; right: 32px;
+  display: flex; gap: 8px; z-index: 90;
+}
+.nav-arrow {
+  width: 40px; height: 40px; border: 1.5px solid var(--border);
+  border-radius: 8px; background: var(--answer-bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s, border-color 0.18s, color 0.3s;
+  color: var(--text-primary);
+}
+.nav-arrow:hover { background: var(--answer-hover); }
+.nav-arrow:disabled { opacity: 0.3; pointer-events: none; }
+.nav-arrow svg { width: 16px; height: 16px; }
+
+/* ── Submitting overlay ── */
+.submitting-overlay {
+  position: fixed; inset: 0; background: var(--overlay-bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 200; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, background 0.4s;
+}
+.submitting-overlay.show { opacity: 1; pointer-events: all; }
+.spinner {
+  width: 36px; height: 36px; border: 2.5px solid var(--border);
+  border-top-color: var(--text-primary); border-radius: 50%;
+  animation: spin 0.7s linear infinite; margin-bottom: 16px;
+}
+.submitting-overlay p { font-size: 15px; color: var(--text-secondary); }
+
+/* ── Animations ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes meshFloat {
+  0%   { transform: translate(0,0) rotate(0deg); }
+  33%  { transform: translate(3%,2%) rotate(2deg); }
+  66%  { transform: translate(-2%,3%) rotate(-1.5deg); }
+  100% { transform: translate(1%,-2%) rotate(1deg); }
+}
+@keyframes titleReveal {
+  from { opacity: 0; transform: translateY(20px) skewY(1deg); }
+  to   { opacity: 1; transform: translateY(0) skewY(0); }
+}
+@keyframes subtitleReveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes choiceStagger {
+  from { opacity: 0; transform: translateX(-18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes popIn {
+  0%   { transform: scale(0.85); opacity: 0; }
+  65%  { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes checkPop {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.25); }
+  80%  { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes ripple {
+  0%   { transform: translate(-50%,-50%) scale(0); opacity: 0.5; }
+  100% { transform: translate(-50%,-50%) scale(4); opacity: 0; }
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-8px); }
+  40%      { transform: translateX(8px); }
+  60%      { transform: translateX(-5px); }
+  80%      { transform: translateX(5px); }
+}
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.slide.animating-in .q-number    { animation: subtitleReveal 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+.slide.animating-in .q-title     { animation: titleReveal 0.5s cubic-bezier(0.22,1,0.36,1) 0.04s both; }
+.slide.animating-in .q-subtitle  { animation: subtitleReveal 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+.slide.animating-in .input-wrap  { animation: subtitleReveal 0.45s cubic-bezier(0.22,1,0.36,1) 0.14s both; }
+.slide.animating-in .privacy-note{ animation: subtitleReveal 0.45s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+.slide.animating-in .ok-btn,
+.slide.animating-in .start-btn   { animation: fadeInScale 0.4s cubic-bezier(0.22,1,0.36,1) 0.22s both; }
+.slide.animating-in .welcome-badge { animation: fadeInScale 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+.slide.animating-in .choice-btn:nth-child(1) { animation: choiceStagger 0.4s cubic-bezier(0.22,1,0.36,1) 0.10s both; }
+.slide.animating-in .choice-btn:nth-child(2) { animation: choiceStagger 0.4s cubic-bezier(0.22,1,0.36,1) 0.17s both; }
+.slide.animating-in .choice-btn:nth-child(3) { animation: choiceStagger 0.4s cubic-bezier(0.22,1,0.36,1) 0.24s both; }
+.slide.animating-in .choice-btn:nth-child(4) { animation: choiceStagger 0.4s cubic-bezier(0.22,1,0.36,1) 0.31s both; }
+.choice-btn.selected { animation: popIn 0.35s cubic-bezier(0.22,1,0.36,1) both; }
+.check-circle.animate { animation: checkPop 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+.shake { animation: shake 0.4s ease both; }
+.ripple-effect {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.3); width: 10px; height: 10px;
+  pointer-events: none; animation: ripple 0.55s ease-out forwards;
+}
+.confetti-piece {
+  position: fixed; pointer-events: none; z-index: 9990;
+  border-radius: 2px; animation: confettiFall linear forwards;
+}
+
+/* Conditional slide (hidden by default) */
+.slide-conditional { display: none; }
+.slide-conditional.visible { display: block; }
+
+@media (max-width: 600px) {
+  .top-nav { padding: 0 20px; }
+  .slide { padding: 0 20px; }
+  .nav-arrows { bottom: 20px; right: 20px; }
+  .step-labels { display: none; }
+  .social-proof { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+<script>
+  const SHEET_URL = "https://script.google.com/macros/s/AKfycbwF_O97-pvYRKmb0JBTV6Ef0BAMKEXSex7wApxDbI7TC3znAot1BrBBiSOwzJrKnlA4Ew/exec";
+</script>
+
+<!-- Backgrounds -->
+<div class="gradient-bg"></div>
+<div class="grain-overlay"></div>
+
+<!-- Progress -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Step labels -->
+<div class="step-labels" id="stepLabels" style="display:none">
+  <span class="step-label" data-step="1">Name</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="2">Email</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="3">Company</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="4">Interest</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="5">Details</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="6">Message</span>
+</div>
+
+<!-- Nav -->
+<nav class="top-nav">
+  <span class="brand">LeadForm</span>
+  <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" onclick="toggleTheme()">
+    <div class="theme-toggle-knob" id="themeKnob">☀️</div>
+  </button>
+</nav>
+
+<!-- Social proof (welcome only) -->
+<div class="social-proof" id="socialProof">
+  <div class="avatars">
+    <div class="avatar" style="background:#e74c3c">A</div>
+    <div class="avatar" style="background:#3498db">B</div>
+    <div class="avatar" style="background:#2ecc71">C</div>
+    <div class="avatar" style="background:#9b59b6">D</div>
+  </div>
+  Join 240+ businesses already using us
+</div>
+
+<div class="slides-container" id="slidesContainer">
+
+  <!-- SLIDE 0: Welcome -->
+  <div class="slide active" data-index="0">
+    <div class="welcome-badge"><span class="dot"></span> Takes less than 2 minutes</div>
+    <h1 class="q-title">Let's talk<br><em>business.</em></h1>
+    <p class="q-subtitle">Answer a few quick questions and we'll get back to you within 24 hours.</p>
+    <button class="start-btn" onclick="startForm()">
+      Start now
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- SLIDE 1: Name -->
+  <div class="slide" data-index="1">
+    <div class="q-number">01 →</div>
+    <h2 class="q-title">What's your name?</h2>
+    <p class="q-subtitle">First and last name, please.</p>
+    <div class="input-wrap">
+      <input type="text" id="field-name" placeholder="Jane Smith" autocomplete="name" />
+      <div class="input-underline"></div>
+    </div>
+    <div class="error-msg" id="err-name">Please enter your full name.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      OK <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 2: Email -->
+  <div class="slide" data-index="2">
+    <div class="q-number">02 →</div>
+    <h2 class="q-title">Your work email?</h2>
+    <p class="q-subtitle">We'll use this to get back to you.</p>
+    <div class="input-wrap">
+      <input type="email" id="field-email" placeholder="jane@company.com" autocomplete="email" oninput="validateEmailLive(this)" />
+      <div class="input-underline"></div>
+      <span class="input-icon" id="email-icon"></span>
+    </div>
+    <div class="privacy-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      We never spam. Unsubscribe anytime.
+    </div>
+    <div class="error-msg" id="err-email">Please enter a valid email address.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      OK <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 3: Phone -->
+  <div class="slide" data-index="3">
+    <div class="q-number">03 →</div>
+    <h2 class="q-title">Your phone number?</h2>
+    <p class="q-subtitle">For WhatsApp or SMS follow-up — optional but helpful.</p>
+    <div class="input-wrap">
+      <input type="tel" id="field-phone" placeholder="+91 98765 43210" autocomplete="tel" />
+      <div class="input-underline"></div>
+    </div>
+    <button class="ok-btn" onclick="nextSlide()">
+      OK <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint">press Enter ↵ &nbsp;·&nbsp; Skip with Enter if blank</span>
+  </div>
+
+  <!-- SLIDE 4: Company -->
+  <div class="slide" data-index="4">
+    <div class="q-number">04 →</div>
+    <h2 class="q-title">What company<br>are you from?</h2>
+    <p class="q-subtitle">Include your role if you'd like.</p>
+    <div class="input-wrap">
+      <input type="text" id="field-company" placeholder="Acme Inc — Head of Growth" />
+      <div class="input-underline"></div>
+    </div>
+    <div class="error-msg" id="err-company">Please enter your company name.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      OK <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 5: Interest -->
+  <div class="slide" data-index="5">
+    <div class="q-number">05 →</div>
+    <h2 class="q-title">What are you most interested in?</h2>
+    <p class="q-subtitle">We'll tailor our response accordingly.</p>
+    <div class="choices" id="interest-choices">
+      <button class="choice-btn" onclick="selectChoice(this,'interest','demo')" data-value="Product Demo">
+        <span class="choice-letter">A</span> Product Demo
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'interest','pricing')" data-value="Pricing & Plans">
+        <span class="choice-letter">B</span> Pricing &amp; Plans
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'interest','partnership')" data-value="Partnership">
+        <span class="choice-letter">C</span> Partnership
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'interest','general')" data-value="General Inquiry">
+        <span class="choice-letter">D</span> General Inquiry
+      </button>
+    </div>
+    <div class="error-msg" id="err-interest">Please select an option.</div>
+  </div>
+
+  <!-- SLIDE 6: Conditional — Budget (shown only if Pricing selected) -->
+  <div class="slide slide-conditional" data-index="6" id="slide-budget">
+    <div class="q-number">06 →</div>
+    <h2 class="q-title">What's your<br>monthly budget?</h2>
+    <p class="q-subtitle">This helps us recommend the right plan.</p>
+    <div class="choices" id="budget-choices">
+      <button class="choice-btn" onclick="selectChoice(this,'budget','low')" data-value="Under ₹10,000/mo">
+        <span class="choice-letter">A</span> Under ₹10,000 / mo
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'budget','mid')" data-value="₹10,000–₹50,000/mo">
+        <span class="choice-letter">B</span> ₹10,000 – ₹50,000 / mo
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'budget','high')" data-value="₹50,000–₹2L/mo">
+        <span class="choice-letter">C</span> ₹50,000 – ₹2L / mo
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'budget','enterprise')" data-value="₹2L+/mo">
+        <span class="choice-letter">D</span> ₹2L+ / mo
+      </button>
+    </div>
+    <div class="error-msg" id="err-budget">Please select a range.</div>
+  </div>
+
+  <!-- SLIDE 7: Message -->
+  <div class="slide" data-index="7">
+    <div class="q-number" id="msg-q-number">07 →</div>
+    <h2 class="q-title">Anything else<br>you'd like us to know?</h2>
+    <p class="q-subtitle">Optional — but the more context the better.</p>
+    <div class="input-wrap">
+      <textarea id="field-message" placeholder="Tell us about your use case, timeline, or specific questions…"></textarea>
+      <div class="input-underline"></div>
+    </div>
+    <button class="ok-btn" onclick="submitForm()">
+      Submit
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+
+  <!-- SLIDE 8: Thank You -->
+  <div class="slide" data-index="8">
+    <div style="text-align:center">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h2 class="q-title">You're all set!</h2>
+      <p class="q-subtitle" style="max-width:420px;margin:0 auto 16px">Thanks for reaching out. We've got your details and will be in touch within 24 hours.</p>
+      <div class="lead-score-badge" id="leadScoreBadge"></div>
+      <br>
+      <button class="start-btn" onclick="resetForm()" style="background:var(--green);color:white;border:none;">
+        Submit another response
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Nav Arrows -->
+<div class="nav-arrows" id="navArrows" style="display:none">
+  <button class="nav-arrow" id="btnUp" onclick="prevSlide()" title="Previous">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <button class="nav-arrow" id="btnDown" onclick="nextSlide()" title="Next">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+</div>
+
+<!-- Submitting overlay -->
+<div class="submitting-overlay" id="submittingOverlay">
+  <div class="spinner"></div>
+  <p>Sending your response…</p>
+</div>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<script>
+// ── UTM capture ──
+function getUTMs() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    utm_source:   p.get('utm_source')   || 'direct',
+    utm_medium:   p.get('utm_medium')   || '',
+    utm_campaign: p.get('utm_campaign') || '',
+    referrer:     document.referrer     || '',
+  };
+}
+
+// ── Lead Scoring ──
+function scoreLead(data) {
+  let score = 0;
+  if (data.interest === 'Product Demo' || data.interest === 'Pricing & Plans') score += 3;
+  if (data.interest === 'Partnership') score += 2;
+  if (data.phone) score += 2;
+  if (data.budget && data.budget.includes('₹2L')) score += 3;
+  if (data.budget && data.budget.includes('₹50,000')) score += 2;
+  if (data.message && data.message.length > 30) score += 1;
+  if (data.utm_source !== 'direct') score += 1;
+  if (score >= 5) return 'Hot 🔥';
+  if (score >= 3) return 'Warm 🌤';
+  return 'Cold ❄️';
+}
+
+// ── Slide map (which slides are in the flow) ──
+// Base flow: 0 → 1 → 2 → 3 → 4 → 5 → [6 if pricing] → 7 → 8
+const BASE_FLOW = [0,1,2,3,4,5,7,8];
+let currentFlow = [...BASE_FLOW];
+let currentFlowIdx = 0;
+const selectedChoices = {};
+const TOTAL_LABELS = 6; // for step label display (slides 1-6 = questions)
+
+const slides = document.querySelectorAll('.slide');
+const allSlideIndices = Array.from(slides).map((s,i) => i);
+
+// ── Save / Restore progress ──
+function saveProgress() {
+  const data = {
+    flowIdx: currentFlowIdx,
+    flow: currentFlow,
+    name:    document.getElementById('field-name').value,
+    email:   document.getElementById('field-email').value,
+    phone:   document.getElementById('field-phone').value,
+    company: document.getElementById('field-company').value,
+    message: document.getElementById('field-message').value,
+    choices: selectedChoices,
+  };
+  try { localStorage.setItem('lf_progress', JSON.stringify(data)); } catch(e) {}
+}
+
+function restoreProgress() {
+  try {
+    const raw = localStorage.getItem('lf_progress');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (data.name)    document.getElementById('field-name').value    = data.name;
+    if (data.email)   document.getElementById('field-email').value   = data.email;
+    if (data.phone)   document.getElementById('field-phone').value   = data.phone;
+    if (data.company) document.getElementById('field-company').value = data.company;
+    if (data.message) document.getElementById('field-message').value = data.message;
+    if (data.choices) Object.assign(selectedChoices, data.choices);
+    if (data.email) validateEmailLive(document.getElementById('field-email'));
+    if (data.flowIdx > 0) {
+      currentFlow = data.flow || [...BASE_FLOW];
+      currentFlowIdx = Math.max(0, data.flowIdx - 1);
+      goToSlideByFlow(currentFlowIdx);
+    }
+  } catch(e) {}
+}
+
+// ── Theme ──
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeKnob').textContent = isDark ? '☀️' : '🌙';
+  playSound('click');
+  try { localStorage.setItem('lf_theme', isDark ? 'light' : 'dark'); } catch(e) {}
+}
+(function() {
+  try {
+    const t = localStorage.getItem('lf_theme');
+    if (t === 'dark') {
+      document.documentElement.setAttribute('data-theme','dark');
+      document.getElementById('themeKnob').textContent = '🌙';
+    }
+  } catch(e) {}
+})();
+
+// ── Navigation ──
+function currentSlideIndex() { return currentFlow[currentFlowIdx]; }
+
+function goToSlideByFlow(idx) {
+  const prev = document.querySelector('.slide.active');
+  if (prev) {
+    prev.classList.remove('active','animating-in');
+    prev.classList.add('exit-up');
+    setTimeout(() => prev.classList.remove('exit-up'), 500);
+  }
+  currentFlowIdx = idx;
+  const slideIdx = currentFlow[idx];
+  const target = slides[slideIdx];
+  target.classList.add('active');
+  void target.offsetWidth;
+  target.classList.add('animating-in');
+  setTimeout(() => target.classList.remove('animating-in'), 800);
+
+  updateUI();
+  const firstInput = target.querySelector('input, textarea');
+  if (firstInput) setTimeout(() => firstInput.focus(), 300);
+
+  if (slideIdx === 8) { playSound('success'); spawnConfetti(); showLeadScore(); }
+  else if (slideIdx > 0) playSound('whoosh');
+
+  saveProgress();
+}
+
+function startForm() {
+  playSound('whoosh');
+  document.getElementById('socialProof').style.display = 'none';
+  goToSlideByFlow(1);
+}
+
+function prevSlide() {
+  if (currentFlowIdx > 1) goToSlideByFlow(currentFlowIdx - 1);
+}
+
+function nextSlide() {
+  if (!validateCurrent()) return;
+  if (currentFlowIdx < currentFlow.length - 1) goToSlideByFlow(currentFlowIdx + 1);
+}
+
+// ── Update UI ──
+function updateUI() {
+  const fill = document.getElementById('progressFill');
+  const labels = document.getElementById('stepLabels');
+  const navArrows = document.getElementById('navArrows');
+  const btnUp = document.getElementById('btnUp');
+  const btnDown = document.getElementById('btnDown');
+  const slideIdx = currentFlow[currentFlowIdx];
+
+  if (slideIdx === 0 || slideIdx === 8) {
+    fill.style.width = slideIdx === 8 ? '100%' : '0%';
+    labels.style.display = 'none';
+    navArrows.style.display = 'none';
+    document.getElementById('socialProof').style.display = slideIdx === 0 ? 'flex' : 'none';
+  } else {
+    const questionSlides = currentFlow.filter(i => i > 0 && i < 8);
+    const qPos = questionSlides.indexOf(slideIdx) + 1;
+    const pct = (qPos / questionSlides.length) * 100;
+    fill.style.width = pct + '%';
+    labels.style.display = 'flex';
+    document.getElementById('socialProof').style.display = 'none';
+
+    // Update step labels (map slide index to label step)
+    const labelMap = {1:1, 2:2, 3:null, 4:3, 5:4, 6:5, 7:6};
+    const activeLabel = labelMap[slideIdx];
+    document.querySelectorAll('.step-label').forEach(el => {
+      const s = parseInt(el.dataset.step);
+      el.classList.remove('active','done');
+      if (s === activeLabel) el.classList.add('active');
+      else if (activeLabel && s < activeLabel) el.classList.add('done');
+    });
+
+    navArrows.style.display = 'flex';
+    btnUp.disabled = currentFlowIdx <= 1;
+    btnDown.disabled = currentFlowIdx >= currentFlow.length - 2;
+  }
+}
+
+// ── Validation ──
+function validateCurrent() {
+  clearErrors();
+  const idx = currentFlow[currentFlowIdx];
+  if (idx === 1) {
+    const v = document.getElementById('field-name').value.trim();
+    if (v.length < 2 || !v.includes(' ')) { shakeAndError('err-name'); return false; }
+  }
+  if (idx === 2) {
+    const v = document.getElementById('field-email').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { shakeAndError('err-email'); return false; }
+  }
+  if (idx === 4) {
+    const v = document.getElementById('field-company').value.trim();
+    if (v.length < 2) { shakeAndError('err-company'); return false; }
+  }
+  if (idx === 5) {
+    if (!selectedChoices['interest']) { shakeAndError('err-interest'); return false; }
+  }
+  if (idx === 6) {
+    if (!selectedChoices['budget']) { shakeAndError('err-budget'); return false; }
+  }
+  return true;
+}
+function shakeAndError(errId) {
+  showError(errId);
+  const s = document.querySelector('.slide.active');
+  s.classList.remove('shake'); void s.offsetWidth; s.classList.add('shake');
+  setTimeout(() => s.classList.remove('shake'), 400);
+  playSound('error');
+}
+function showError(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 3000); }
+}
+function clearErrors() {
+  document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+}
+
+// ── Live email validation ──
+function validateEmailLive(input) {
+  const icon = document.getElementById('email-icon');
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+  icon.textContent = valid ? '✅' : (input.value.length > 3 ? '❌' : '');
+  icon.classList.toggle('show', input.value.length > 3);
+}
+
+// ── Choice selection ──
+function selectChoice(btn, field, key) {
+  const group = btn.closest('.choices');
+  group.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedChoices[field] = btn.dataset.value;
+  playSound('click');
+  saveProgress();
+
+  // Conditional logic: if interest = pricing, inject budget slide
+  if (field === 'interest') {
+    if (key === 'pricing') {
+      document.getElementById('slide-budget').classList.add('visible');
+      currentFlow = [0,1,2,3,4,5,6,7,8];
+    } else {
+      document.getElementById('slide-budget').classList.remove('visible');
+      currentFlow = [...BASE_FLOW];
+    }
+    // Update msg q-number
+    const msgNum = key === 'pricing' ? '07 →' : '06 →';
+    document.getElementById('msg-q-number').textContent = msgNum;
+  }
+
+  // Auto-advance after short delay
+  setTimeout(() => {
+    if (validateCurrent()) goToSlideByFlow(currentFlowIdx + 1);
+  }, 380);
+}
+
+// ── Lead score display ──
+function showLeadScore() {
+  const data = {
+    interest: selectedChoices['interest'] || '',
+    budget:   selectedChoices['budget']   || '',
+    phone:    document.getElementById('field-phone').value,
+    message:  document.getElementById('field-message').value,
+    utm_source: getUTMs().utm_source,
+  };
+  const score = scoreLead(data);
+  const badge = document.getElementById('leadScoreBadge');
+  badge.textContent = 'Lead Score: ' + score;
+  badge.className = 'lead-score-badge ' + (score.includes('Hot') ? 'hot' : score.includes('Warm') ? 'warm' : 'cold');
+  setTimeout(() => {
+    const cc = document.querySelector('.check-circle');
+    if (cc) { cc.classList.remove('animate'); void cc.offsetWidth; cc.classList.add('animate'); }
+  }, 100);
+}
+
+// ── Submit ──
+function submitViaGet(payload) {
+  return new Promise((resolve) => {
+    const params = Object.entries(payload)
+      .map(([k,v]) => encodeURIComponent(k)+'='+encodeURIComponent(v)).join('&');
+    fetch(SHEET_URL+'?'+params, { method:'GET', mode:'no-cors' })
+      .then(() => resolve()).catch(() => resolve());
+    setTimeout(resolve, 5000);
+  });
+}
+
+async function submitForm() {
+  const overlay = document.getElementById('submittingOverlay');
+  overlay.classList.add('show');
+  const utms = getUTMs();
+  const payload = {
+    timestamp:    new Date().toISOString(),
+    name:         document.getElementById('field-name').value.trim(),
+    email:        document.getElementById('field-email').value.trim(),
+    phone:        document.getElementById('field-phone').value.trim(),
+    company:      document.getElementById('field-company').value.trim(),
+    interest:     selectedChoices['interest'] || '',
+    budget:       selectedChoices['budget']   || 'N/A',
+    message:      document.getElementById('field-message').value.trim(),
+    lead_score:   scoreLead({
+      interest:   selectedChoices['interest'] || '',
+      budget:     selectedChoices['budget']   || '',
+      phone:      document.getElementById('field-phone').value,
+      message:    document.getElementById('field-message').value,
+      utm_source: utms.utm_source,
+    }),
+    utm_source:   utms.utm_source,
+    utm_medium:   utms.utm_medium,
+    utm_campaign: utms.utm_campaign,
+    referrer:     utms.referrer,
+  };
+  await submitViaGet(payload);
+  overlay.classList.remove('show');
+  try { localStorage.removeItem('lf_progress'); } catch(e) {}
+  goToSlideByFlow(currentFlow.length - 1);
+}
+
+// ── Reset ──
+function resetForm() {
+  ['field-name','field-email','field-phone','field-company','field-message']
+    .forEach(id => document.getElementById(id).value = '');
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  Object.keys(selectedChoices).forEach(k => delete selectedChoices[k]);
+  document.getElementById('slide-budget').classList.remove('visible');
+  currentFlow = [...BASE_FLOW];
+  currentFlowIdx = 0;
+  document.getElementById('socialProof').style.display = 'flex';
+  goToSlideByFlow(0);
+  try { localStorage.removeItem('lf_progress'); } catch(e) {}
+}
+
+// ── Keyboard ──
+document.addEventListener('keydown', (e) => {
+  const idx = currentFlow[currentFlowIdx];
+  if (e.key === 'Enter' && idx > 0 && idx < 8) {
+    if (document.activeElement.tagName === 'TEXTAREA') return;
+    e.preventDefault();
+    if (idx === 7) submitForm(); else nextSlide();
+  }
+});
+
+// ── Sound Engine ──
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playSound(type) {
+  try {
+    const ctx = getAudioCtx(); const now = ctx.currentTime;
+    const osc = ctx.createOscillator(); const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    if (type === 'whoosh') {
+      osc.type = 'sine'; osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(440, now+0.18);
+      gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.001, now+0.22);
+      osc.start(now); osc.stop(now+0.22);
+    } else if (type === 'click') {
+      osc.type = 'sine'; osc.frequency.setValueAtTime(600, now);
+      osc.frequency.exponentialRampToValueAtTime(300, now+0.08);
+      gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.001, now+0.1);
+      osc.start(now); osc.stop(now+0.1);
+    } else if (type === 'error') {
+      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(120, now);
+      osc.frequency.exponentialRampToValueAtTime(80, now+0.15);
+      gain.gain.setValueAtTime(0.06, now); gain.gain.exponentialRampToValueAtTime(0.001, now+0.18);
+      osc.start(now); osc.stop(now+0.18);
+    } else if (type === 'success') {
+      [[523,0],[659,0.12],[784,0.24]].forEach(([freq,delay]) => {
+        const o = ctx.createOscillator(); const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination); o.type = 'sine';
+        o.frequency.setValueAtTime(freq, now+delay);
+        g.gain.setValueAtTime(0, now+delay);
+        g.gain.linearRampToValueAtTime(0.12, now+delay+0.04);
+        g.gain.exponentialRampToValueAtTime(0.001, now+delay+0.45);
+        o.start(now+delay); o.stop(now+delay+0.5);
+      }); return;
+    } else if (type === 'keypress') {
+      osc.type = 'sine'; osc.frequency.setValueAtTime(800, now);
+      gain.gain.setValueAtTime(0.03, now); gain.gain.exponentialRampToValueAtTime(0.001, now+0.05);
+      osc.start(now); osc.stop(now+0.05);
+    }
+  } catch(e) {}
+}
+
+// Keypress sound
+document.querySelectorAll('input, textarea').forEach(el => {
+  el.addEventListener('keydown', () => playSound('keypress'));
+});
+
+// Ripple
+document.querySelectorAll('.ok-btn, .start-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const r = document.createElement('span'); r.classList.add('ripple-effect');
+    const rect = btn.getBoundingClientRect();
+    r.style.left = (e.clientX-rect.left)+'px'; r.style.top = (e.clientY-rect.top)+'px';
+    btn.appendChild(r); setTimeout(() => r.remove(), 600);
+  });
+});
+
+// ── Confetti ──
+const confettiColors = ['#f4c430','#e74c3c','#3498db','#2ecc71','#9b59b6','#e67e22','#1abc9c'];
+function spawnConfetti() {
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const p = document.createElement('div'); p.classList.add('confetti-piece');
+      p.style.left = Math.random()*100+'vw'; p.style.top = '-12px';
+      p.style.background = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+      p.style.width = (6+Math.random()*8)+'px'; p.style.height = (6+Math.random()*8)+'px';
+      p.style.borderRadius = Math.random()>0.5 ? '50%' : '2px';
+      p.style.animationDuration = (1.8+Math.random()*2)+'s';
+      document.body.appendChild(p); setTimeout(() => p.remove(), 4000);
+    }, i*25);
+  }
+}
+
+// ── Custom Cursor ──
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mouseX=0, mouseY=0, ringX=0, ringY=0;
+document.addEventListener('mousemove', e => {
+  mouseX=e.clientX; mouseY=e.clientY;
+  dot.style.left=mouseX+'px'; dot.style.top=mouseY+'px';
+});
+function animateRing() {
+  ringX += (mouseX-ringX)*0.12; ringY += (mouseY-ringY)*0.12;
+  ring.style.left=ringX+'px'; ring.style.top=ringY+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('button, input, textarea, a').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+});
+document.addEventListener('mousedown', () => dot.classList.add('clicking'));
+document.addEventListener('mouseup',   () => dot.classList.remove('clicking'));
+
+// ── Init ──
+updateUI();
+restoreProgress();
+</script>
+</body>
+</html>
