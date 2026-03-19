@@ -351,8 +351,8 @@ td.muted{color:var(--text-secondary);font-size:11px}
 /* Lock */
 .ls{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);transition:background .5s}
 .lc{border-radius:18px;padding:36px 32px;max-width:340px;width:100%;text-align:center;position:relative;overflow:hidden}
-.li{font-size:34px;margin-bottom:14px;display:block;animation:lfl 3s ease-in-out infinite}
-@keyframes lfl{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+
 .lt{font-family:'Playfair Display',serif;font-size:21px;font-weight:900;margin-bottom:5px}
 .lsub{font-size:12px;color:var(--text-secondary);margin-bottom:20px;line-height:1.5}
 .lin{width:100%;background:transparent;border:none;border-bottom:2px solid var(--bs);padding:8px 0 10px;font-family:'DM Sans',sans-serif;font-size:17px;color:var(--text-primary);outline:none;text-align:center;letter-spacing:5px;margin-bottom:4px;transition:border-color .2s}
@@ -360,7 +360,7 @@ td.muted{color:var(--text-secondary);font-size:11px}
 .le{font-size:11px;color:var(--red);min-height:14px;margin-bottom:10px}
 .lb{width:100%;padding:11px;background:var(--btn);color:var(--btnc);border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;transition:opacity .18s,transform .13s}
 .lb:hover{opacity:.88;transform:translateY(-1px)}
-.lh{font-size:9px;color:var(--text-secondary);margin-top:10px;opacity:.45}
+
 @keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 .lc.shk{animation:shk .35s ease}
 
@@ -542,13 +542,11 @@ td.muted{color:var(--text-secondary);font-size:11px}
 <!-- Lock -->
 <div class="ls" id="lockScreen">
   <div class="lc gc" id="lockCard">
-    <span class="li">🔐</span>
-    <h1 class="lt">Admin Access</h1>
-    <p class="lsub">Enter your password to view the lead dashboard.</p>
+    <canvas id="logoLock" style="display:block;margin:0 auto 20px"></canvas>
+    <p class="lsub">Enter your password to continue.</p>
     <input class="lin" type="password" id="lockIn" placeholder="••••••••" onkeydown="if(event.key==='Enter')unlock()">
     <div class="le" id="lockErr"></div>
     <button class="lb" onclick="unlock()">Unlock Dashboard</button>
-    <p class="lh">Default: <strong>admin123</strong></p>
   </div>
 </div>
 
@@ -1724,6 +1722,115 @@ window.unlock = function(){
 // ════════ UTILS ════════
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 renderPresets();
+
+// ════════════════════════════════════════
+// LOCK SCREEN STATIC LOGO
+// ════════════════════════════════════════
+(function(){
+  const el = document.getElementById('logoLock');
+  if(!el) return;
+  const CW=200, CH=90;
+  const DPR=Math.min(window.devicePixelRatio||1,3);
+  el.width=CW*DPR; el.height=CH*DPR;
+  el.style.width=CW+'px'; el.style.height=CH+'px';
+  const cx=el.getContext('2d');
+  cx.scale(DPR,DPR);
+
+  function blueGrad(x1,y1,x2,y2){
+    const g=cx.createLinearGradient(x1,y1,x2,y2);
+    g.addColorStop(0,'#1a6cf6'); g.addColorStop(1,'#3abff8'); return g;
+  }
+  function navyGrad(x,y,w,h){
+    const g=cx.createLinearGradient(x,y,x+w,y+h);
+    g.addColorStop(0,'#0A2540'); g.addColorStop(1,'#1A4A8A'); return g;
+  }
+
+  let _lw=0;
+  function getLeadW(){
+    if(_lw>0) return _lw;
+    cx.font='700 22px Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif';
+    _lw=cx.measureText('Lead').width;
+    return _lw;
+  }
+
+  function draw(){
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    cx.clearRect(0,0,CW,CH);
+
+    // ── Doc icon (centred, larger for lock screen) ──
+    const x=12, y=6, w=40, h=52, r=6;
+    cx.save();
+    cx.shadowColor='rgba(10,37,64,.28)'; cx.shadowBlur=10; cx.shadowOffsetY=4;
+    cx.beginPath();
+    cx.moveTo(x+r,y); cx.lineTo(x+w-12,y);
+    cx.lineTo(x+w,y+12); cx.lineTo(x+w,y+h-r);
+    cx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    cx.lineTo(x+r,y+h); cx.quadraticCurveTo(x,y+h,x,y+h-r);
+    cx.lineTo(x,y+r); cx.quadraticCurveTo(x,y,x+r,y);
+    cx.closePath();
+    cx.fillStyle=navyGrad(x,y,w,h); cx.fill();
+    cx.shadowBlur=0;
+
+    // dog-ear
+    cx.beginPath(); cx.moveTo(x+w-12,y); cx.lineTo(x+w,y+12); cx.lineTo(x+w-12,y+12); cx.closePath();
+    cx.fillStyle='rgba(255,255,255,.12)'; cx.fill();
+    cx.strokeStyle='rgba(255,255,255,.18)'; cx.lineWidth=.7; cx.stroke();
+
+    // accent bar
+    cx.beginPath(); cx.roundRect(x,y+h-13,w,13,[0,0,r,r]);
+    cx.fillStyle=blueGrad(x,y,x+w,y); cx.fill();
+
+    // field lines
+    cx.fillStyle='rgba(58,191,248,.88)';
+    [[x+6,y+14,9],[x+6,y+25,7],[x+6,y+35,11]].forEach(([fx,fy,fw])=>{
+      cx.beginPath(); cx.roundRect(fx,fy,fw,3,1.5); cx.fill();
+    });
+    cx.strokeStyle='rgba(255,255,255,.2)'; cx.lineWidth=1;
+    [[x+6,y+20,w-12,6],[x+6,y+30,w-12,6]].forEach(([fx,fy,fw,fh])=>{
+      cx.beginPath(); cx.roundRect(fx,fy,fw,fh,2.5); cx.stroke();
+    });
+
+    // checkmark
+    cx.strokeStyle='#fff'; cx.lineWidth=2; cx.lineCap='round'; cx.lineJoin='round';
+    cx.beginPath();
+    cx.moveTo(x+7,y+h-6); cx.lineTo(x+15,y+h-1); cx.lineTo(x+28,y+h-11);
+    cx.stroke();
+    cx.restore();
+
+    // ── Wordmark ──
+    const lw=getLeadW();
+    const startX=62, baseY=36, gap=3;
+
+    cx.save();
+    cx.globalAlpha=1;
+    cx.font='700 22px Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif';
+    cx.fillStyle=isDark?'#f0ebe0':'#0A2540';
+    cx.fillText('Lead',startX,baseY);
+
+    cx.font='400 22px Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif';
+    const fx=startX+lw+gap;
+    cx.fillStyle=blueGrad(fx,0,fx+56,0);
+    cx.fillText('Form',fx,baseY);
+
+    // ── ADMIN label ──
+    cx.globalAlpha=0.85;
+    cx.font='700 12px "Gill Sans","Gill Sans MT",Calibri,sans-serif';
+    cx.fillStyle='#1a6cf6';
+    cx.letterSpacing='3px';
+    cx.fillText('ADMIN',startX,54);
+    cx.letterSpacing='0px';
+
+    // Thin blue underline beneath ADMIN
+    cx.globalAlpha=0.25;
+    cx.fillStyle=blueGrad(startX,0,startX+80,0);
+    cx.fillRect(startX,58,80,1.5);
+
+    cx.restore();
+  }
+
+  draw();
+  document.addEventListener('themeChanged',()=>{ _lw=0; draw(); });
+})();
 
 // ════════════════════════════════════════
 // NAVBAR LOGO ANIMATION
