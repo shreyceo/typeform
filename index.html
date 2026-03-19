@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<title>Get in Touch</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#f5f0e8;--text-primary:#1a1708;--text-secondary:#6b6540;
+  --border:#d8d0bc;--progress-fill:#1a1708;--answer-bg:#ede8dc;
+  --answer-hover:#e4ddd0;--green:#2d6a4f;--red:#c0392b;
+  --btn-bg:#1a1708;--btn-color:#fff;--overlay-bg:rgba(245,240,232,0.95);
+  --transition:cubic-bezier(0.4,0,0.2,1);
+  --glass-bg:rgba(255,253,248,0.55);
+  --glass-border:rgba(255,255,255,0.7);
+  --glass-shadow:0 8px 32px rgba(60,50,20,0.10), 0 1.5px 8px rgba(60,50,20,0.07);
+  --glass-blur:18px;
+}
+[data-theme="dark"]{
+  --bg:#0f0f0f;--text-primary:#f0ebe0;--text-secondary:#9a9070;
+  --border:#2e2b22;--progress-fill:#f0ebe0;--answer-bg:#1c1b16;
+  --answer-hover:#252318;--btn-bg:#f0ebe0;--btn-color:#1a1708;
+  --overlay-bg:rgba(15,15,15,0.95);
+  --glass-bg:rgba(20,18,12,0.55);
+  --glass-border:rgba(255,255,255,0.08);
+  --glass-shadow:0 8px 32px rgba(0,0,0,0.38), 0 1.5px 8px rgba(0,0,0,0.28);
+}
+
+/* ── Cursor ── */
+*{cursor:none!important}
+/* Hide cursor on touch devices */
+@media(hover:none){.cursor-dot,.cursor-ring{display:none!important}}
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--text-primary);border-radius:50%;pointer-events:none;z-index:9999;will-change:transform;transform:translate3d(-100px,-100px,0);transition:background .3s,opacity .3s,width .15s,height .15s;opacity:0}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:2px solid rgba(26,23,8,.35);border-radius:50%;pointer-events:none;z-index:9998;will-change:transform;transform:translate3d(-100px,-100px,0);transition:border-color .25s,background .25s,opacity .3s,width .2s,height .2s;opacity:0}
+[data-theme="dark"] .cursor-ring{border-color:rgba(240,235,224,.35)}
+.cursor-ring.hovering{width:52px;height:52px;border-color:var(--text-primary);background:rgba(26,23,8,.06)}
+.cursor-dot.clicking{width:4px;height:4px}
+
+/* ── Base ── */
+html{height:100%;height:-webkit-fill-available}
+body{height:100%;height:-webkit-fill-available;overflow:hidden;font-family:'DM Sans',sans-serif;color:var(--text-primary);transition:background .6s,color .4s;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+[data-lang="hi"] body,[data-lang="hi"] input,[data-lang="hi"] textarea,[data-lang="hi"] button{font-family:'Hind',sans-serif}
+
+/* ── Video BG ── */
+.video-bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--bg)}
+/* Aurora canvas fills the bg */
+#auroraCanvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* Spotlight */
+.spotlight{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(circle 280px at -300px -300px, rgba(255,255,255,0.07) 0%, transparent 70%);
+  transition:background 0.05s linear;
+}
+[data-theme="dark"] .spotlight{
+  background:radial-gradient(circle 320px at -300px -300px, rgba(255,255,255,0.055) 0%, transparent 70%);
+}
+
+/* Grain */
+.grain-overlay{position:fixed;inset:0;z-index:3;pointer-events:none}
+/* Layer 1 — fine grain */
+.grain-overlay::before{
+  content:'';position:absolute;inset:-50%;width:200%;height:200%;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+  opacity:.055;mix-blend-mode:multiply;
+  animation:grainShift 0.9s steps(1) infinite;
+}
+/* Layer 2 — coarse fibres */
+.grain-overlay::after{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.35 0.05' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  background-size:300px 300px;
+  opacity:.04;mix-blend-mode:multiply;
+}
+/* Slight warm paper tint overlay */
+.grain-overlay-tint{position:fixed;inset:0;z-index:4;pointer-events:none;
+  background:rgba(210,185,140,0.06);
+  mix-blend-mode:multiply;
+}
+@keyframes grainShift{
+  0%{transform:translate(0,0)}
+  20%{transform:translate(-2%,-3%)}
+  40%{transform:translate(3%,1%)}
+  60%{transform:translate(-1%,3%)}
+  80%{transform:translate(2%,-2%)}
+  100%{transform:translate(0,0)}
+}
+[data-theme="dark"] .grain-overlay::before{opacity:.03;mix-blend-mode:screen}
+[data-theme="dark"] .grain-overlay::after{opacity:.02;mix-blend-mode:screen}
+[data-theme="dark"] .grain-overlay-tint{background:rgba(30,20,10,0.15);mix-blend-mode:multiply}
+
+/* ── Progress Ring ── */
+.progress-bar{display:none} /* hidden — replaced by ring */
+.progress-fill{display:none}
+.progress-ring-wrap{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:101;display:none;align-items:center;justify-content:center}
+.progress-ring-wrap.visible{display:flex}
+.progress-ring-svg{width:44px;height:44px;transform:rotate(-90deg)}
+.progress-ring-track{fill:none;stroke:var(--border);stroke-width:3;transition:stroke .4s}
+.progress-ring-fill{fill:none;stroke:var(--progress-fill);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .55s cubic-bezier(.22,1,.36,1),stroke .4s}
+.progress-ring-label{position:absolute;font-size:10px;font-weight:700;color:var(--text-secondary);letter-spacing:.5px;transform:rotate(0)}
+
+/* ── Step Labels ── */
+.step-labels{position:fixed;top:8px;left:50%;transform:translateX(-50%);display:flex;gap:0;z-index:101;align-items:center;font-size:11px;font-weight:600;letter-spacing:.3px;white-space:nowrap}
+.step-label{padding:2px 8px;color:var(--text-secondary);transition:color .3s;opacity:.5}
+.step-label.active{color:var(--text-primary);opacity:1;font-weight:700}
+.step-label.done{opacity:.35}
+.step-sep{color:var(--border);font-size:10px;opacity:.6}
+
+/* ── Nav ── */
+.top-nav{position:fixed;top:max(22px,env(safe-area-inset-top));left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 24px;padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right));z-index:90;gap:10px}
+.brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;letter-spacing:-.3px;color:var(--text-primary);transition:color .4s}
+.nav-controls{display:flex;align-items:center;gap:10px}
+
+/* Lang toggle */
+.lang-toggle{display:flex;background:var(--answer-bg);border:1.5px solid var(--border);border-radius:100px;padding:2px;gap:2px;transition:background .3s,border-color .3s}
+.lang-btn{padding:3px 10px;border-radius:100px;border:none;font-size:11px;font-weight:700;letter-spacing:.5px;background:transparent;color:var(--text-secondary);transition:background .2s,color .2s}
+.lang-btn.active{background:var(--btn-bg);color:var(--btn-color)}
+
+/* Theme toggle */
+.theme-toggle{width:44px;height:24px;border-radius:12px;background:var(--answer-bg);border:1.5px solid var(--border);position:relative;transition:background .3s,border-color .3s;flex-shrink:0}
+.theme-toggle-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--text-primary);transition:transform .3s var(--transition),background .3s;display:flex;align-items:center;justify-content:center;font-size:10px}
+[data-theme="dark"] .theme-toggle-knob{transform:translateX(20px)}
+
+/* Social proof */
+.social-proof{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--answer-bg);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--text-secondary);font-weight:500;z-index:90;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:background .4s,border-color .4s,color .4s;backdrop-filter:blur(8px)}
+.social-proof .avatars{display:flex}
+.social-proof .avatar{width:24px;height:24px;border-radius:50%;border:2px solid var(--bg);margin-left:-7px;font-size:7.5px;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;font-weight:700;color:white}
+.social-proof .avatars .avatar:first-child{margin-left:0}
+
+/* ── Slides ── */
+.slides-container{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);padding-left:16px;padding-right:16px;transition:padding-bottom .25s ease,top .25s ease}
+/* keyboard-open class applied via JS */
+body.keyboard-open .slides-container{align-items:flex-start;padding-top:72px;overflow-y:auto}
+body.keyboard-open .slide.active{position:relative;transform:none!important;opacity:1!important}
+.slide{position:absolute;width:100%;max-width:680px;opacity:0;transform:translateY(22px) scale(.97);filter:blur(8px);pointer-events:none;transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1),filter .5s cubic-bezier(.22,1,.36,1);
+  background:var(--glass-bg);
+  backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:24px;
+  box-shadow:var(--glass-shadow);
+  padding:40px 44px;
+}
+.slide.active{opacity:1;transform:translateY(0) scale(1);filter:blur(0);pointer-events:all}
+.slide.exit-up{opacity:0;transform:translateY(-22px) scale(.97);filter:blur(8px);pointer-events:none}
+
+/* Lottie container per slide */
+.slide-lottie{width:80px;height:80px;margin-bottom:16px;opacity:.9}
+
+/* ── Question ── */
+.q-number{font-size:12px;font-weight:700;color:var(--text-secondary);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:4px;transition:color .4s;overflow:hidden}
+.q-num-digit{display:inline-block;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .25s;will-change:transform}
+.q-num-digit.spin-out{transform:translateY(-120%);opacity:0}
+.q-num-digit.spin-in{transform:translateY(120%);opacity:0}
+@keyframes digitDrop{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}
+.q-num-digit.dropped{animation:digitDrop .35s cubic-bezier(.22,1,.36,1) both}
+.q-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:900;line-height:1.15;letter-spacing:-.5px;margin-bottom:8px;transition:color .4s;
+  background:linear-gradient(160deg,#1a1708 0%,#3d2e0a 40%,#1a1708 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+[data-theme='dark'] .q-title{
+  background:linear-gradient(160deg,#f5f0e8 0%,#e8dcc8 45%,#c8b898 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+[data-lang='hi'] .q-title{font-family:'Hind',sans-serif}
+.q-subtitle{font-size:15px;color:var(--text-secondary);font-weight:400;margin-bottom:32px;line-height:1.5;transition:color .4s}
+
+/* ── Input ── */
+.input-wrap{position:relative;margin-bottom:8px}
+.input-wrap input,.input-wrap textarea{width:100%;background:transparent;border:none;border-bottom:2px solid var(--border);padding:12px 36px 14px 0;font-family:inherit;font-size:clamp(16px,2.5vw,20px);font-weight:400;color:var(--text-primary);outline:none;transition:border-color .2s,color .4s;border-radius:0;-webkit-appearance:none;appearance:none}
+.input-wrap textarea{resize:none;height:80px;line-height:1.5;font-size:18px;padding-right:0}
+.input-wrap input::placeholder,.input-wrap textarea::placeholder{color:var(--border)}
+.input-wrap input:focus,.input-wrap textarea:focus{border-color:var(--text-primary)}
+.input-underline{position:absolute;bottom:0;left:0;height:2px;width:0;background:var(--text-primary);transition:width .3s var(--transition)}
+.input-wrap input:focus~.input-underline,.input-wrap textarea:focus~.input-underline{width:100%}
+.input-icon{position:absolute;right:4px;bottom:12px;width:20px;height:20px;opacity:0;transition:opacity .3s,transform .3s;transform:scale(.5);display:flex;align-items:center;justify-content:center}
+.input-icon.show{opacity:1;transform:scale(1)}
+.input-icon svg{width:20px;height:20px}
+.input-icon.valid svg{stroke:#2d6a4f}
+.input-icon.invalid svg{stroke:#c0392b}
+.phone-wrap{display:flex;align-items:flex-end;gap:0}
+.phone-prefix{font-size:20px;font-weight:500;color:var(--text-primary);padding:12px 10px 14px 0;border-bottom:2px solid var(--border);transition:border-color .2s,color .4s;white-space:nowrap;line-height:1;flex-shrink:0}
+.phone-wrap input{padding-left:4px}
+.phone-wrap:focus-within .phone-prefix{border-color:var(--text-primary)}
+.privacy-note{font-size:11px;color:var(--text-secondary);margin-bottom:20px;display:flex;align-items:center;gap:5px;opacity:.7}
+.privacy-note svg{width:11px;height:11px;flex-shrink:0}
+
+/* ── Choices ── */
+.choices{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.choice-btn{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,252,245,0.5);border:1px solid rgba(255,255,255,0.55);border-radius:10px;transition:background .18s,border-color .18s,transform .15s,color .3s;font-family:inherit;font-size:15px;font-weight:400;color:var(--text-primary);text-align:left;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+[data-theme='dark'] .choice-btn{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.09)}
+.choice-btn:hover{background:rgba(255,252,245,0.75);transform:translateX(4px)}
+[data-theme='dark'] .choice-btn:hover{background:rgba(255,255,255,0.08)}
+.choice-btn{overflow:hidden}
+.choice-btn::after{content:'';position:absolute;inset:0;background:var(--btn-bg);transform:translateX(-101%);transition:transform .42s cubic-bezier(.22,1,.36,1);border-radius:10px;z-index:0}
+.choice-btn.selected::after{transform:translateX(0)}
+.choice-btn.selected{color:var(--btn-color);border-color:var(--btn-bg);background:transparent}
+.choice-btn .choice-letter,.choice-btn span{position:relative;z-index:1}
+.choice-letter{width:26px;height:26px;border-radius:6px;background:var(--bg);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;color:var(--text-secondary);transition:background .18s,color .18s,border-color .18s}
+.choice-btn.selected .choice-letter{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);color:white}
+
+/* ── Buttons ── */
+.ok-btn,.start-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;background:var(--btn-bg);color:var(--btn-color);border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;transition:opacity .18s,transform .15s,background .4s,color .4s;letter-spacing:.2px;position:relative;overflow:hidden}
+.start-btn{padding:16px 32px;font-size:16px;border-radius:12px}
+.ok-btn:hover,.start-btn:hover{opacity:.88;transform:translateY(-1px)}
+.ok-btn svg,.start-btn svg{width:16px;height:16px;flex-shrink:0}
+.start-btn svg{width:18px;height:18px}
+.hint{display:inline-block;margin-left:12px;font-size:12px;color:var(--text-secondary)}
+
+/* ── Error ── */
+.error-msg{font-size:13px;color:var(--red);margin-top:4px;margin-bottom:12px;display:none}
+.error-msg.show{display:block}
+
+/* ── Welcome ── */
+.welcome-slide .q-title{font-size:clamp(32px,5vw,58px);font-weight:900;margin-bottom:16px}
+.welcome-badge{display:inline-flex;align-items:center;gap:6px;background:var(--answer-bg);border:1px solid var(--border);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:20px;letter-spacing:.3px;transition:background .4s,border-color .4s,color .4s}
+.welcome-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+
+/* Typewriter cursor */
+.typewriter-cursor{display:inline-block;width:3px;background:var(--text-primary);animation:blink .8s step-end infinite;margin-left:2px;vertical-align:middle}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── Thank You ── */
+.thankyou-slide{text-align:center}
+.check-circle{width:72px;height:72px;display:flex;align-items:center;justify-content:center;margin:0 auto 28px}
+.lead-score-badge-wrap{perspective:800px;margin-bottom:32px;display:inline-block}
+.lead-score-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:100px;font-size:14px;font-weight:700;border:1.5px solid currentColor;transform:rotateY(90deg) scale(.8);opacity:0;transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .5s,box-shadow .6s}
+.lead-score-badge.flipped{transform:rotateY(0deg) scale(1);opacity:1}
+.lead-score-badge.hot{color:#e74c3c;background:rgba(231,76,60,.08)}
+.lead-score-badge.hot.flipped{box-shadow:0 0 24px rgba(231,76,60,.35),0 0 48px rgba(231,76,60,.15)}
+.lead-score-badge.warm{color:#e67e22;background:rgba(230,126,34,.08)}
+.lead-score-badge.warm.flipped{box-shadow:0 0 24px rgba(230,126,34,.35),0 0 48px rgba(230,126,34,.15)}
+.lead-score-badge.cold{color:#3498db;background:rgba(52,152,219,.08)}
+.lead-score-badge.cold.flipped{box-shadow:0 0 24px rgba(52,152,219,.35),0 0 48px rgba(52,152,219,.15)}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 24px rgba(255,255,255,.1)}50%{box-shadow:0 0 40px rgba(255,255,255,.25)}}
+
+/* ── Nav Arrows ── */
+.nav-arrows{position:fixed;bottom:32px;right:32px;display:flex;gap:8px;z-index:90}
+.nav-arrow{width:40px;height:40px;border:1.5px solid var(--border);border-radius:8px;background:var(--answer-bg);display:flex;align-items:center;justify-content:center;transition:background .18s,border-color .18s,color .3s;color:var(--text-primary)}
+.nav-arrow:hover{background:var(--answer-hover)}
+.nav-arrow:disabled{opacity:.3;pointer-events:none}
+.nav-arrow svg{width:16px;height:16px}
+
+/* ── Submitting overlay ── */
+.submitting-overlay{position:fixed;inset:0;background:var(--overlay-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .3s,background .4s}
+.submitting-overlay.show{opacity:1;pointer-events:all}
+.spinner{width:36px;height:36px;border:2.5px solid var(--border);border-top-color:var(--text-primary);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:16px}
+
+/* ── Exit Intent Popup ── */
+.exit-popup{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s}
+.exit-popup.show{opacity:1;pointer-events:all}
+.exit-popup-card{background:var(--bg);border:1.5px solid var(--border);border-radius:20px;padding:40px 36px;max-width:400px;width:90%;text-align:center;transform:scale(.9) translateY(20px);transition:transform .35s cubic-bezier(.22,1,.36,1),background .4s;box-shadow:0 24px 64px rgba(0,0,0,.18)}
+.exit-popup.show .exit-popup-card{transform:scale(1) translateY(0)}
+.exit-popup-emoji{font-size:48px;margin-bottom:16px;display:block}
+.exit-popup-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--text-primary);margin-bottom:8px;line-height:1.2}
+.exit-popup-sub{font-size:14px;color:var(--text-secondary);margin-bottom:28px;line-height:1.5}
+.exit-popup-btns{display:flex;flex-direction:column;gap:10px}
+.exit-btn-primary{padding:14px 24px;background:var(--btn-bg);color:var(--btn-color);border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:600}
+.exit-btn-secondary{padding:10px;background:transparent;border:none;font-size:13px;color:var(--text-secondary);font-family:inherit}
+
+/* ── Animations ── */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes titleReveal{from{opacity:0;transform:translateY(20px) skewY(1deg)}to{opacity:1;transform:translateY(0) skewY(0)}}
+@keyframes subtitleReveal{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes choiceStagger{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes popIn{0%{transform:scale(.85);opacity:0}65%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+@keyframes checkPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.25)}80%{transform:scale(.9)}100%{transform:scale(1);opacity:1}}
+@keyframes ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.5}100%{transform:translate(-50%,-50%) scale(4);opacity:0}}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes fadeInScale{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes lottieFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.slide.animating-in .slide-lottie{animation:fadeInScale .5s cubic-bezier(.22,1,.36,1) both}
+.slide.animating-in .q-number{animation:subtitleReveal .4s cubic-bezier(.22,1,.36,1) .05s both}
+.slide.animating-in .q-title{animation:titleReveal .5s cubic-bezier(.22,1,.36,1) .08s both}
+.slide.animating-in .q-subtitle{animation:subtitleReveal .5s cubic-bezier(.22,1,.36,1) .14s both}
+.slide.animating-in .input-wrap{animation:subtitleReveal .45s cubic-bezier(.22,1,.36,1) .18s both}
+.slide.animating-in .privacy-note{animation:subtitleReveal .45s cubic-bezier(.22,1,.36,1) .22s both}
+.slide.animating-in .ok-btn,.slide.animating-in .start-btn{animation:fadeInScale .4s cubic-bezier(.22,1,.36,1) .26s both}
+.slide.animating-in .welcome-badge{animation:fadeInScale .4s cubic-bezier(.22,1,.36,1) .04s both}
+.slide.animating-in .choice-btn:nth-child(1){animation:choiceStagger .4s cubic-bezier(.22,1,.36,1) .10s both}
+.slide.animating-in .choice-btn:nth-child(2){animation:choiceStagger .4s cubic-bezier(.22,1,.36,1) .17s both}
+.slide.animating-in .choice-btn:nth-child(3){animation:choiceStagger .4s cubic-bezier(.22,1,.36,1) .24s both}
+.slide.animating-in .choice-btn:nth-child(4){animation:choiceStagger .4s cubic-bezier(.22,1,.36,1) .31s both}
+.choice-btn.selected{animation:popIn .35s cubic-bezier(.22,1,.36,1) both}
+.check-circle.animate{animation:checkPop .6s cubic-bezier(.22,1,.36,1) both}
+.shake{animation:shake .4s ease both}
+.ripple-effect{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);width:10px;height:10px;pointer-events:none;animation:ripple .55s ease-out forwards}
+.confetti-piece{position:fixed;pointer-events:none;z-index:9990;border-radius:2px;animation:confettiFall linear forwards}
+/* Particle burst */
+.particle-burst{position:fixed;pointer-events:none;z-index:9995;border-radius:50%;animation:particleBurst ease-out forwards}
+@keyframes particleBurst{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--px),var(--py)) scale(0);opacity:0}
+}
+/* Fireworks */
+100%{transform:translateY(var(--fy)) scaleY(.1);opacity:0}}
+100%{transform:translate(var(--bx),var(--by)) scale(1);opacity:0}}
+.slide-conditional{display:none}
+.slide-conditional.visible{display:block}
+/* Glass top highlight */
+.slide::before{
+  content:'';position:absolute;top:0;left:5%;right:5%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.7) 40%,rgba(255,255,255,0.9) 50%,rgba(255,255,255,0.7) 60%,transparent);
+  border-radius:100%;pointer-events:none;
+}
+[data-theme='dark'] .slide::before{
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08) 40%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.08) 60%,transparent);
+}
+.lottie-float{animation:lottieFloat 3s ease-in-out infinite}
+
+@media(max-width:600px){
+  .top-nav{top:max(14px,env(safe-area-inset-top));padding:0 16px}
+  .slide{padding:24px 22px;border-radius:18px;max-width:100%}
+  .slide-lottie{width:52px;height:52px;margin-bottom:10px}
+  .q-title{font-size:clamp(22px,6.5vw,32px)!important;margin-bottom:6px}
+  .q-subtitle{font-size:13px;margin-bottom:20px}
+  .q-number{font-size:11px;margin-bottom:8px}
+  .welcome-badge{font-size:11px;padding:4px 10px;margin-bottom:14px}
+  .input-wrap input,.input-wrap textarea{font-size:16px;padding-bottom:10px} /* 16px prevents iOS zoom */
+  .input-wrap textarea{height:64px;font-size:15px}
+  .phone-prefix{font-size:16px;padding-bottom:10px}
+  .choice-btn{padding:11px 14px;font-size:14px;gap:10px}
+  .choice-letter{width:22px;height:22px;font-size:11px}
+  .ok-btn{padding:12px 20px;font-size:14px}
+  .start-btn{padding:13px 24px;font-size:15px}
+  .hint{display:none}
+  .nav-arrows{bottom:max(16px,env(safe-area-inset-bottom));right:16px}
+  .nav-arrow{width:36px;height:36px}
+  .step-labels{display:none}
+  .social-proof{font-size:11px;padding:5px 12px;bottom:max(16px,env(safe-area-inset-bottom))}
+  .choices{gap:8px;margin-bottom:20px}
+  .error-msg{font-size:12px}
+  .exit-popup-card{padding:28px 20px}
+  .exit-popup-title{font-size:20px}
+  .check-circle{width:56px;height:56px;margin-bottom:16px}
+  .lead-score-badge{font-size:12px;padding:6px 14px;margin-bottom:20px}
+  .privacy-note{font-size:10px;margin-bottom:14px}
+}
+/* Tall phones (iPhone Pro Max, etc) */
+@media(max-width:430px) and (min-height:900px){
+  .q-title{font-size:clamp(24px,7vw,34px)!important}
+  .slide-lottie{width:60px;height:60px}
+  .choice-btn{padding:13px 14px}
+}
+/* Small phones */
+@media(max-width:375px){
+  .q-title{font-size:clamp(20px,6vw,28px)!important}
+  .slide-lottie{width:44px;height:44px;margin-bottom:8px}
+  .ok-btn,.start-btn{font-size:13px;padding:11px 16px}
+}
+</style>
+</head>
+<body>
+
+<script>
+const SHEET_URL="https://script.google.com/macros/s/AKfycbwF_O97-pvYRKmb0JBTV6Ef0BAMKEXSex7wApxDbI7TC3znAot1BrBBiSOwzJrKnlA4Ew/exec";
+</script>
+
+<!-- ── Aurora Background ── -->
+<div class="video-bg" id="videoBg">
+  <canvas id="auroraCanvas"></canvas>
+</div>
+<div class="spotlight" id="spotlight"></div>
+<div class="grain-overlay"></div>
+<div class="grain-overlay-tint"></div>
+
+<!-- Progress -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="step-labels" id="stepLabels" style="display:none">
+  <span class="step-label" data-step="1" data-en="Name" data-hi="नाम">Name</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="2" data-en="Email" data-hi="ईमेल">Email</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="3" data-en="Phone" data-hi="फोन">Phone</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="4" data-en="Company" data-hi="कंपनी">Company</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="5" data-en="Interest" data-hi="रुचि">Interest</span>
+  <span class="step-sep">›</span>
+  <span class="step-label" data-step="6" data-en="Message" data-hi="संदेश">Message</span>
+</div>
+<!-- Progress Ring -->
+<div class="progress-ring-wrap" id="progressRingWrap">
+  <svg class="progress-ring-svg" viewBox="0 0 44 44">
+    <circle class="progress-ring-track" cx="22" cy="22" r="18"/>
+    <circle class="progress-ring-fill" id="ringFill" cx="22" cy="22" r="18"
+      stroke-dasharray="113.1" stroke-dashoffset="113.1"/>
+  </svg>
+  <span class="progress-ring-label" id="ringLabel">1/6</span>
+</div>
+
+<!-- Nav -->
+<nav class="top-nav">
+  <span class="brand">LeadForm</span>
+  <div class="nav-controls">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btnEn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btnHi" onclick="setLang('hi')">हिं</button>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <div class="theme-toggle-knob" id="themeKnob">☀️</div>
+    </button>
+  </div>
+</nav>
+
+<!-- Social proof -->
+<div class="social-proof" id="socialProof">
+  <div class="avatars">
+    <div class="avatar" style="background:#c0392b" title="Rahul M.">RM</div>
+    <div class="avatar" style="background:#1a6ba0" title="Priya S.">PS</div>
+    <div class="avatar" style="background:#1e8449" title="Arjun K.">AK</div>
+    <div class="avatar" style="background:#6c3483" title="Neha T.">NT</div>
+    <div class="avatar" style="background:#b7770d" title="Vikram D.">VD</div>
+  </div>
+  <span data-en-pre="Join " data-en-post="+ businesses already using us" data-hi-pre="" data-hi-post="+ व्यवसाय हमसे जुड़ चुके हैं">Join <span id="counterNum">0</span>+ businesses already using us</span>
+</div>
+
+<!-- ── Slides ── -->
+<div class="slides-container" id="slidesContainer">
+
+  <!-- SLIDE 0: Welcome -->
+  <div class="slide active welcome-slide" data-index="0">
+    <div class="slide-lottie lottie-float" id="lottie-0"></div>
+    <div class="welcome-badge"><span class="dot"></span> <span data-en="Takes less than 2 minutes" data-hi="2 मिनट से कम समय">Takes less than 2 minutes</span></div>
+    <h1 class="q-title" id="welcome-title"></h1><span class="typewriter-cursor" id="tw-cursor"></span>
+    <p class="q-subtitle" data-en="Answer a few quick questions and we'll get back to you within 24 hours." data-hi="कुछ सवालों के जवाब दें और हम 24 घंटे में संपर्क करेंगे।">Answer a few quick questions and we'll get back to you within 24 hours.</p>
+    <button class="start-btn" onclick="startForm()">
+      <span data-en="Start now" data-hi="शुरू करें">Start now</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- SLIDE 1: Name -->
+  <div class="slide" data-index="1">
+    <div class="slide-lottie lottie-float" id="lottie-1"></div>
+    <div class="q-number"><span class="q-num-digit">0</span><span class="q-num-digit">1</span><span class="q-num-arrow"> →</span></div>
+    <h2 class="q-title" data-en="What's your name?" data-hi="आपका नाम क्या है?">What's your name?</h2>
+    <p class="q-subtitle" data-en="First and last name, please." data-hi="कृपया पूरा नाम बताएं।">First and last name, please.</p>
+    <div class="input-wrap">
+      <input type="text" id="field-name" data-placeholder-en="Jane Smith" data-placeholder-hi="रमेश शर्मा" placeholder="Jane Smith" autocomplete="name"/>
+      <div class="input-underline"></div>
+    </div>
+    <div class="error-msg" id="err-name" data-en="Please enter your full name." data-hi="कृपया पूरा नाम दर्ज करें।">Please enter your full name.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      <span data-en="OK" data-hi="ठीक है">OK</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint" data-en="press Enter ↵" data-hi="Enter दबाएं ↵">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 2: Email -->
+  <div class="slide" data-index="2">
+    <div class="slide-lottie lottie-float" id="lottie-2"></div>
+    <div class="q-number"><span class="q-num-digit">0</span><span class="q-num-digit">2</span><span class="q-num-arrow"> →</span></div>
+    <h2 class="q-title" data-en="Your work email?" data-hi="आपका ईमेल पता?">Your work email?</h2>
+    <p class="q-subtitle" data-en="We'll use this to get back to you." data-hi="हम इससे आपसे संपर्क करेंगे।">We'll use this to get back to you.</p>
+    <div class="input-wrap">
+      <input type="email" id="field-email" data-placeholder-en="jane@company.com" data-placeholder-hi="ramesh@company.com" placeholder="jane@company.com" autocomplete="email" oninput="validateEmailLive(this)"/>
+      <div class="input-underline"></div>
+      <span class="input-icon" id="email-icon"></span>
+    </div>
+    <div class="privacy-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span data-en="We never spam. Unsubscribe anytime." data-hi="हम कभी स्पैम नहीं करते।">We never spam. Unsubscribe anytime.</span>
+    </div>
+    <div class="error-msg" id="err-email" data-en="Please enter a valid email." data-hi="कृपया सही ईमेल दर्ज करें।">Please enter a valid email.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      <span data-en="OK" data-hi="ठीक है">OK</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint" data-en="press Enter ↵" data-hi="Enter दबाएं ↵">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 3: Phone -->
+  <div class="slide" data-index="3">
+    <div class="slide-lottie lottie-float" id="lottie-3"></div>
+    <div class="q-number"><span class="q-num-digit">0</span><span class="q-num-digit">3</span><span class="q-num-arrow"> →</span></div>
+    <h2 class="q-title" data-en="Your phone number?" data-hi="आपका फोन नंबर?">Your phone number?</h2>
+    <p class="q-subtitle" data-en="For WhatsApp or SMS follow-up. Minimum 10 digits." data-hi="WhatsApp/SMS के लिए। कम से कम 10 अंक।">For WhatsApp or SMS follow-up. Minimum 10 digits.</p>
+    <div class="input-wrap phone-wrap">
+      <span class="phone-prefix">+91</span>
+      <input type="tel" id="field-phone" data-placeholder-en="98765 43210" data-placeholder-hi="98765 43210" placeholder="98765 43210" autocomplete="tel" oninput="validatePhoneLive(this)"/>
+      <div class="input-underline"></div>
+    </div>
+    <div class="error-msg" id="err-phone" data-en="Please enter at least 10 digits." data-hi="कृपया कम से कम 10 अंक दर्ज करें।">Please enter at least 10 digits.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      <span data-en="OK" data-hi="ठीक है">OK</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint" data-en="Skip with Enter ↵" data-hi="Enter से छोड़ें ↵">Skip with Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 4: Company -->
+  <div class="slide" data-index="4">
+    <div class="slide-lottie lottie-float" id="lottie-4"></div>
+    <div class="q-number"><span class="q-num-digit">0</span><span class="q-num-digit">4</span><span class="q-num-arrow"> →</span></div>
+    <h2 class="q-title" data-en="What company are you from?" data-hi="आप किस कंपनी से हैं?">What company are you from?</h2>
+    <p class="q-subtitle" data-en="Include your role if you'd like." data-hi="चाहें तो अपना पद भी बताएं।">Include your role if you'd like.</p>
+    <div class="input-wrap">
+      <input type="text" id="field-company" data-placeholder-en="Acme Inc — Head of Growth" data-placeholder-hi="Acme Inc — ग्रोथ हेड" placeholder="Acme Inc — Head of Growth"/>
+      <div class="input-underline"></div>
+    </div>
+    <div class="error-msg" id="err-company" data-en="Please enter your company." data-hi="कृपया कंपनी का नाम दर्ज करें।">Please enter your company.</div>
+    <button class="ok-btn" onclick="nextSlide()">
+      <span data-en="OK" data-hi="ठीक है">OK</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </button>
+    <span class="hint" data-en="press Enter ↵" data-hi="Enter दबाएं ↵">press Enter ↵</span>
+  </div>
+
+  <!-- SLIDE 5: Interest -->
+  <div class="slide" data-index="5">
+    <div class="slide-lottie lottie-float" id="lottie-5"></div>
+    <div class="q-number"><span class="q-num-digit">0</span><span class="q-num-digit">5</span><span class="q-num-arrow"> →</span></div>
+    <h2 class="q-title" data-en="What are you most interested in?" data-hi="आपकी मुख्य रुचि क्या है?">What are you most interested in?</h2>
+    <p class="q-subtitle" data-en="We'll tailor our response accordingly." data-hi="हम उसी के अनुसार जवाब देंगे।">We'll tailor our response accordingly.</p>
+    <div class="choices" id="interest-choices">
+      <button class="choice-btn" onclick="selectChoice(this,'interest','demo')" data-value="Product Demo" data-en="Product Demo" data-hi="प्रोडक्ट डेमो">
+        <span class="choice-letter">A</span><span data-en="Product Demo" data-hi="प्रोडक्ट डेमो">Product Demo</span>
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'interest','pricing')" data-value="Pricing & Plans" data-en="Pricing &amp; Plans" data-hi="कीमत और प्लान">
+        <span class="choice-letter">B</span><span data-en="Pricing &amp; Plans" data-hi="कीमत और प्लान">Pricing &amp; Plans</span>
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'interest','partnership')" data-value="Partnership" data-en="Partnership" data-hi="साझेदारी">
+        <span class="choice-letter">C</span><span data-en="Partnership" data-hi="साझेदारी">Partnership</span>
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'interest','general')" data-value="General Inquiry" data-en="General Inquiry" data-hi="सामान्य पूछताछ">
+        <span class="choice-letter">D</span><span data-en="General Inquiry" data-hi="सामान्य पूछताछ">General Inquiry</span>
+      </button>
+    </div>
+    <div class="error-msg" id="err-interest" data-en="Please select an option." data-hi="कृपया एक विकल्प चुनें।">Please select an option.</div>
+  </div>
+
+  <!-- SLIDE 6: Budget (conditional) -->
+  <div class="slide slide-conditional" data-index="6" id="slide-budget">
+    <div class="slide-lottie lottie-float" id="lottie-6"></div>
+    <div class="q-number"><span class="q-num-digit">0</span><span class="q-num-digit">6</span><span class="q-num-arrow"> →</span></div>
+    <h2 class="q-title" data-en="What's your monthly budget?" data-hi="आपका मासिक बजट क्या है?">What's your monthly budget?</h2>
+    <p class="q-subtitle" data-en="Helps us recommend the right plan." data-hi="हम सही प्लान सुझा सकेंगे।">Helps us recommend the right plan.</p>
+    <div class="choices" id="budget-choices">
+      <button class="choice-btn" onclick="selectChoice(this,'budget','low')" data-value="Under ₹10,000/mo">
+        <span class="choice-letter">A</span> Under ₹10,000 / mo
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'budget','mid')" data-value="₹10,000–₹50,000/mo">
+        <span class="choice-letter">B</span> ₹10,000 – ₹50,000 / mo
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'budget','high')" data-value="₹50,000–₹2L/mo">
+        <span class="choice-letter">C</span> ₹50,000 – ₹2L / mo
+      </button>
+      <button class="choice-btn" onclick="selectChoice(this,'budget','enterprise')" data-value="₹2L+/mo">
+        <span class="choice-letter">D</span> ₹2L+ / mo
+      </button>
+    </div>
+    <div class="error-msg" id="err-budget" data-en="Please select a range." data-hi="कृपया एक बजट चुनें।">Please select a range.</div>
+  </div>
+
+  <!-- SLIDE 7: Message -->
+  <div class="slide" data-index="7">
+    <div class="slide-lottie lottie-float" id="lottie-7"></div>
+    <div class="q-number" id="msg-q-number"><span class="q-num-digit">0</span><span class="q-num-digit">7</span><span class="q-num-arrow"> →</span></div>
+    <h2 class="q-title" data-en="Anything else you'd like us to know?" data-hi="कुछ और बताना चाहते हैं?">Anything else you'd like us to know?</h2>
+    <p class="q-subtitle" data-en="Optional — but the more context the better." data-hi="वैकल्पिक — लेकिन अधिक जानकारी बेहतर है।">Optional — but the more context the better.</p>
+    <div class="input-wrap">
+      <textarea id="field-message" data-placeholder-en="Tell us about your use case, timeline…" data-placeholder-hi="अपना उपयोग, समयसीमा बताएं…" placeholder="Tell us about your use case, timeline…"></textarea>
+      <div class="input-underline"></div>
+    </div>
+    <button class="ok-btn" onclick="submitForm()">
+      <span data-en="Submit" data-hi="जमा करें">Submit</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+
+  <!-- SLIDE 8: Thank You -->
+  <div class="slide" data-index="8">
+    <div style="text-align:center">
+      <div class="check-circle" id="checkCircleWrap">
+        <svg id="checkSvg" viewBox="0 0 52 52" width="72" height="72" style="display:block">
+          <circle id="checkRing" cx="26" cy="26" r="23" fill="none" stroke="rgba(45,106,79,0.18)" stroke-width="3"/>
+          <circle id="checkArc" cx="26" cy="26" r="23" fill="none" stroke="#2d6a4f" stroke-width="3" stroke-linecap="round"
+            stroke-dasharray="144.5" stroke-dashoffset="144.5"
+            style="transform-origin:center;transform:rotate(-90deg);transition:stroke-dashoffset .7s cubic-bezier(.22,1,.36,1)"/>
+          <polyline id="checkTick" points="14,26 22,34 38,18" fill="none" stroke="#2d6a4f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"
+            stroke-dasharray="34" stroke-dashoffset="34"
+            style="transition:stroke-dashoffset .4s cubic-bezier(.22,1,.36,1) .65s"/>
+        </svg>
+      </div>
+      <h2 class="q-title" data-en="You're all set!" data-hi="आप तैयार हैं!">You're all set!</h2>
+      <p class="q-subtitle" style="max-width:420px;margin:0 auto 16px" data-en="Thanks for reaching out. We'll be in touch within 24 hours." data-hi="संपर्क करने के लिए धन्यवाद। हम 24 घंटे में संपर्क करेंगे।">Thanks for reaching out. We'll be in touch within 24 hours.</p>
+      <div class="lead-score-badge-wrap"><div class="lead-score-badge" id="leadScoreBadge"></div></div><br>
+      <button class="start-btn" onclick="resetForm()" style="background:var(--green);color:white;border:none;margin-top:16px">
+        <span data-en="Submit another response" data-hi="एक और जवाब दें">Submit another response</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Nav Arrows -->
+<div class="nav-arrows" id="navArrows" style="display:none">
+  <button class="nav-arrow" id="btnUp" onclick="prevSlide()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <button class="nav-arrow" id="btnDown" onclick="nextSlide()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+</div>
+
+<!-- Submitting overlay -->
+<div class="submitting-overlay" id="submittingOverlay">
+  <div class="spinner"></div>
+  <p data-en="Sending your response…" data-hi="भेजा जा रहा है…">Sending your response…</p>
+</div>
+
+<!-- Exit Intent Popup -->
+<div class="exit-popup" id="exitPopup">
+  <div class="exit-popup-card">
+    <span class="exit-popup-emoji">👀</span>
+    <div class="exit-popup-title" data-en="Wait! You're almost done" data-hi="रुकिए! आप लगभग पूरा कर चुके हैं">Wait! You're almost done</div>
+    <p class="exit-popup-sub" data-en="Don't lose your progress. Finish in less than a minute and we'll reach out within 24 hours." data-hi="अपनी प्रगति मत खोएं। एक मिनट में पूरा करें।">Don't lose your progress. Finish in less than a minute and we'll reach out within 24 hours.</p>
+    <div class="exit-popup-btns">
+      <button class="exit-btn-primary" onclick="dismissExitPopup(true)">
+        <span data-en="Continue filling form ✍️" data-hi="फॉर्म जारी रखें ✍️">Continue filling form ✍️</span>
+      </button>
+      <button class="exit-btn-secondary" onclick="dismissExitPopup(false)">
+        <span data-en="No thanks, I'll leave" data-hi="नहीं, मैं जाऊंगा">No thanks, I'll leave</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════════════════════
+const TRANSLATIONS = {
+  en: {
+    welcomeTitle: "Let's talk business.",
+    welcomeTitleTyped: "Let's talk\nbusiness.",
+  },
+  hi: {
+    welcomeTitle: "आइए बात करें।",
+    welcomeTitleTyped: "आइए बात करें।",
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  document.getElementById('btnEn').classList.toggle('active', lang==='en');
+  document.getElementById('btnHi').classList.toggle('active', lang==='hi');
+
+  // Update all data-en / data-hi elements
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.placeholder = el.getAttribute('data-placeholder-' + lang) || el.getAttribute('data-' + lang);
+    } else {
+      el.innerHTML = el.getAttribute('data-' + lang) || el.innerHTML;
+    }
+  });
+
+  // Update step labels
+  document.querySelectorAll('.step-label[data-'+lang+']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+
+  // Update placeholders
+  document.querySelectorAll('[data-placeholder-' + lang + ']').forEach(el => {
+    el.placeholder = el.getAttribute('data-placeholder-' + lang);
+  });
+
+  // Restart typewriter with new language
+  startTypewriter();
+  playSound('click');
+  try { localStorage.setItem('lf_lang', lang); } catch(e) {}
+}
+
+// ══════════════════════════════════════════════
+// TYPEWRITER EFFECT
+// ══════════════════════════════════════════════
+let twTimer = null;
+function startTypewriter() {
+  const el = document.getElementById('welcome-title');
+  const cursor = document.getElementById('tw-cursor');
+  const text = TRANSLATIONS[currentLang].welcomeTitleTyped;
+  const lines = text.split('\n');
+  el.innerHTML = '';
+  cursor.style.display = 'inline-block';
+  if (twTimer) clearTimeout(twTimer);
+
+  let i = 0;
+  let lineIdx = 0;
+  let charIdx = 0;
+
+  function type() {
+    if (lineIdx >= lines.length) { cursor.style.display = 'none'; return; }
+    const line = lines[lineIdx];
+    if (charIdx < line.length) {
+      el.innerHTML = lines.slice(0, lineIdx).map(l => l + '<br>').join('') + line.slice(0, charIdx + 1);
+      charIdx++;
+      twTimer = setTimeout(type, currentLang === 'hi' ? 55 : 45);
+    } else {
+      lineIdx++; charIdx = 0;
+      if (lineIdx < lines.length) twTimer = setTimeout(type, 120);
+      else { cursor.style.display = 'none'; }
+    }
+  }
+  setTimeout(type, 400);
+}
+
+// ══════════════════════════════════════════════
+// LOTTIE ANIMATIONS (inline SVG-based, no CDN needed for data)
+// Using abstract geometric animations built from SVG paths
+// ══════════════════════════════════════════════
+const LOTTIE_CONFIGS = [
+  // Slide 0: Handshake / greeting
+  { color: '#f4c430', shape: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z' },
+  // Slide 1: Person
+  { color: '#3498db', shape: 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' },
+  // Slide 2: Email
+  { color: '#e74c3c', shape: 'M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z' },
+  // Slide 3: Phone
+  { color: '#2ecc71', shape: 'M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z' },
+  // Slide 4: Building
+  { color: '#9b59b6', shape: 'M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z' },
+  // Slide 5: Star/interest
+  { color: '#e67e22', shape: 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z' },
+  // Slide 6: Money
+  { color: '#1abc9c', shape: 'M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z' },
+  // Slide 7: Chat bubble
+  { color: '#3498db', shape: 'M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z' },
+  // Slide 8: Check
+  { color: '#2d6a4f', shape: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4.5-4.5 1.41-1.41L10 13.67l7.09-7.09 1.41 1.41L10 16.5z' },
+];
+
+function initLotties() {
+  LOTTIE_CONFIGS.forEach((cfg, i) => {
+    const el = document.getElementById('lottie-' + i);
+    if (!el) return;
+    // Create animated SVG inline
+    el.innerHTML = `
+      <svg viewBox="0 0 24 24" width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow${i}">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+        <circle cx="12" cy="12" r="11" fill="${cfg.color}" opacity="0.15">
+          <animate attributeName="r" values="11;12;11" dur="2.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.15;0.22;0.15" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <path d="${cfg.shape}" fill="${cfg.color}" filter="url(#glow${i})">
+          <animateTransform attributeName="transform" type="scale" values="1;1.08;1" dur="2s" additive="sum" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+          <animate attributeName="opacity" values="1;0.85;1" dur="2s" repeatCount="indefinite"/>
+        </path>
+      </svg>`;
+  });
+}
+
+// ══════════════════════════════════════════════
+// VIDEO BG CANVAS (particle field — no external video needed)
+// ══════════════════════════════════════════════
+function initCanvasBg() {
+  const canvas = document.getElementById('auroraCanvas');
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  // Aurora blobs — each drifts independently
+  const LIGHT_BLOBS = [
+    { x:.18, y:.35, rx:.55, ry:.42, r:0,   vr:.000028, vx:.000018, vy:.000014, color:'rgba(180,140,255,' },
+    { x:.72, y:.65, rx:.50, ry:.45, r:1.1, vr:-.000022, vx:-.000016, vy:.000017, color:'rgba(80,200,200,' },
+    { x:.50, y:.20, rx:.45, ry:.38, r:2.2, vr:.000025, vx:.000012, vy:.000020, color:'rgba(255,160,120,' },
+    { x:.30, y:.75, rx:.40, ry:.35, r:3.5, vr:-.000019, vx:.000022, vy:-.000015, color:'rgba(100,220,160,' },
+    { x:.80, y:.30, rx:.38, ry:.32, r:4.8, vr:.000031, vx:-.000018, vy:.000012, color:'rgba(200,120,220,' },
+  ];
+  const DARK_BLOBS = [
+    { x:.18, y:.35, rx:.55, ry:.42, r:0,   vr:.000028, vx:.000018, vy:.000014, color:'rgba(100,40,180,' },
+    { x:.72, y:.65, rx:.50, ry:.45, r:1.1, vr:-.000022, vx:-.000016, vy:.000017, color:'rgba(20,120,140,' },
+    { x:.50, y:.20, rx:.45, ry:.38, r:2.2, vr:.000025, vx:.000012, vy:.000020, color:'rgba(160,60,40,' },
+    { x:.30, y:.75, rx:.40, ry:.35, r:3.5, vr:-.000019, vx:.000022, vy:-.000015, color:'rgba(20,140,80,' },
+    { x:.80, y:.30, rx:.38, ry:.32, r:4.8, vr:.000031, vx:-.000018, vy:.000012, color:'rgba(120,20,160,' },
+  ];
+
+  let t = 0;
+  function draw() {
+    const W = canvas.width, H = canvas.height;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const blobs = isDark ? DARK_BLOBS : LIGHT_BLOBS;
+    const alpha = isDark ? 0.38 : 0.28;
+
+    ctx.clearRect(0, 0, W, H);
+
+    blobs.forEach(b => {
+      const cx = (b.x + Math.sin(t * b.vx * 1000 + b.r) * 0.18) * W;
+      const cy = (b.y + Math.cos(t * b.vy * 1000 + b.r) * 0.15) * H;
+      const angle = b.r + t * b.vr * 1000;
+      const rx = b.rx * W * (0.9 + 0.1 * Math.sin(t * 0.0003 + b.r));
+      const ry = b.ry * H * (0.9 + 0.1 * Math.cos(t * 0.0004 + b.r));
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+
+      const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, Math.max(rx, ry));
+      grad.addColorStop(0, b.color + (alpha) + ')');
+      grad.addColorStop(0.5, b.color + (alpha * 0.5) + ')');
+      grad.addColorStop(1, b.color + '0)');
+
+      ctx.scale(1, ry / rx);
+      ctx.beginPath();
+      ctx.arc(0, 0, rx, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.restore();
+    });
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ══════════════════════════════════════════════
+// EXIT INTENT
+// ══════════════════════════════════════════════
+let exitShown = false;
+document.addEventListener('mouseleave', e => {
+  if (e.clientY <= 0 && !exitShown && currentFlowIdx > 0 && currentFlowIdx < currentFlow.length - 1) {
+    exitShown = true;
+    document.getElementById('exitPopup').classList.add('show');
+    playSound('click');
+  }
+});
+function dismissExitPopup(resume) {
+  document.getElementById('exitPopup').classList.remove('show');
+  if (resume) {
+    const firstInput = document.querySelector('.slide.active input, .slide.active textarea');
+    if (firstInput) firstInput.focus();
+    playSound('whoosh');
+  }
+}
+
+// Swipe gestures removed
+
+// ══════════════════════════════════════════════
+// CORE STATE & FLOW
+// ══════════════════════════════════════════════
+const BASE_FLOW = [0,1,2,3,4,5,7,8];
+let currentFlow = [...BASE_FLOW];
+let currentFlowIdx = 0;
+const selectedChoices = {};
+const slides = document.querySelectorAll('.slide');
+
+function getUTMs() {
+  const p = new URLSearchParams(window.location.search);
+  return { utm_source: p.get('utm_source')||'direct', utm_medium: p.get('utm_medium')||'', utm_campaign: p.get('utm_campaign')||'', referrer: document.referrer||'' };
+}
+function scoreLead(data) {
+  let s = 0;
+  if (data.interest==='Product Demo'||data.interest==='Pricing & Plans') s+=3;
+  if (data.interest==='Partnership') s+=2;
+  if (data.phone) s+=2;
+  if (data.budget&&data.budget.includes('₹2L')) s+=3;
+  if (data.budget&&data.budget.includes('₹50,000')) s+=2;
+  if (data.message&&data.message.length>30) s+=1;
+  if (data.utm_source!=='direct') s+=1;
+  if (s>=5) return 'Hot 🔥'; if (s>=3) return 'Warm 🌤'; return 'Cold ❄️';
+}
+
+// Save/restore
+function saveProgress() {
+  const d = { flowIdx:currentFlowIdx, flow:currentFlow, choices:selectedChoices,
+    name: document.getElementById('field-name').value,
+    email: document.getElementById('field-email').value,
+    phone: document.getElementById('field-phone').value,
+    company: document.getElementById('field-company').value,
+    message: document.getElementById('field-message').value };
+  try { localStorage.setItem('lf_progress', JSON.stringify(d)); } catch(e){}
+}
+function restoreProgress() {
+  try {
+    const raw = localStorage.getItem('lf_progress'); if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.name)    document.getElementById('field-name').value    = d.name;
+    if (d.email)   document.getElementById('field-email').value   = d.email;
+    if (d.phone)   document.getElementById('field-phone').value   = d.phone;
+    if (d.company) document.getElementById('field-company').value = d.company;
+    if (d.message) document.getElementById('field-message').value = d.message;
+    if (d.choices) Object.assign(selectedChoices, d.choices);
+    if (d.email) validateEmailLive(document.getElementById('field-email'));
+    if (d.flowIdx > 0) { currentFlow = d.flow||[...BASE_FLOW]; currentFlowIdx = Math.max(0,d.flowIdx-1); goToSlideByFlow(currentFlowIdx); }
+  } catch(e){}
+}
+
+// Theme
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme', isDark?'light':'dark');
+  document.getElementById('themeKnob').textContent = isDark?'☀️':'🌙';
+  playSound('click');
+  try { localStorage.setItem('lf_theme', isDark?'light':'dark'); } catch(e){}
+}
+(function(){
+  try {
+    const t = localStorage.getItem('lf_theme');
+    if (t==='dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeKnob').textContent='🌙'; }
+    const l = localStorage.getItem('lf_lang');
+    if (l==='hi') setLang('hi');
+  } catch(e){}
+})();
+
+// Navigation
+function goToSlideByFlow(idx) {
+  const prev = document.querySelector('.slide.active');
+  if (prev) { prev.classList.remove('active','animating-in'); prev.classList.add('exit-up'); setTimeout(()=>prev.classList.remove('exit-up'),500); }
+  currentFlowIdx = idx;
+  const slideIdx = currentFlow[idx];
+  const target = slides[slideIdx];
+  target.classList.add('active');
+  void target.offsetWidth;
+  target.classList.add('animating-in');
+  setTimeout(()=>target.classList.remove('animating-in'),800);
+  updateUI();
+  const fi = target.querySelector('input, textarea');
+  if (fi) setTimeout(()=>fi.focus(),300);
+  if (slideIdx===8) { playSound('success'); haptic('success'); spawnConfetti(); showLeadScore(); }
+  else if (slideIdx>0) { playSound('whoosh'); haptic('light'); }
+
+  // Slot-machine q-number
+  const qSlides = currentFlow.filter(i=>i>0&&i<8);
+  const qPos = qSlides.indexOf(slideIdx) + 1;
+  if (qPos > 0) {
+    setTimeout(() => animateQNumber(slides[slideIdx], qPos), 150);
+  }
+  saveProgress();
+}
+function startForm() { playSound('whoosh'); document.getElementById('socialProof').style.display='none'; goToSlideByFlow(1); }
+function prevSlide() { if (currentFlowIdx>1) goToSlideByFlow(currentFlowIdx-1); }
+function nextSlide() { if (!validateCurrent()) return; if (currentFlowIdx<currentFlow.length-1) goToSlideByFlow(currentFlowIdx+1); }
+
+function updateUI() {
+  const labels = document.getElementById('stepLabels');
+  const navArrows = document.getElementById('navArrows');
+  const ringWrap = document.getElementById('progressRingWrap');
+  const ringFill = document.getElementById('ringFill');
+  const ringLabel = document.getElementById('ringLabel');
+  const slideIdx = currentFlow[currentFlowIdx];
+  const CIRC = 113.1;
+
+  if (slideIdx===0||slideIdx===8) {
+    ringWrap.classList.remove('visible');
+    labels.style.display='none'; navArrows.style.display='none';
+    document.getElementById('socialProof').style.display = slideIdx===0?'flex':'none';
+  } else {
+    const qSlides = currentFlow.filter(i=>i>0&&i<8);
+    const qPos = qSlides.indexOf(slideIdx)+1;
+    const pct = qPos/qSlides.length;
+    ringFill.style.strokeDashoffset = CIRC*(1-pct);
+    ringLabel.textContent = qPos+'/'+qSlides.length;
+    ringWrap.classList.add('visible');
+    labels.style.display='none'; // step labels hidden, ring used instead
+    document.getElementById('socialProof').style.display='none';
+    navArrows.style.display='flex';
+    document.getElementById('btnUp').disabled = currentFlowIdx<=1;
+    document.getElementById('btnDown').disabled = currentFlowIdx>=currentFlow.length-2;
+  }
+}
+
+// Validation
+function validateCurrent() {
+  clearErrors();
+  const idx = currentFlow[currentFlowIdx];
+  if (idx===1) { const v=document.getElementById('field-name').value.trim(); if (v.length<2||!v.includes(' ')) { shakeAndError('err-name'); return false; } }
+  if (idx===2) { const v=document.getElementById('field-email').value.trim(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { shakeAndError('err-email'); return false; } }
+  if (idx===3) { const v=document.getElementById('field-phone').value.replace(/\D/g,''); if (v.length < 10) { shakeAndError('err-phone'); return false; } }
+  if (idx===4) { const v=document.getElementById('field-company').value.trim(); if (v.length<2) { shakeAndError('err-company'); return false; } }
+  if (idx===5) { if (!selectedChoices['interest']) { shakeAndError('err-interest'); return false; } }
+  if (idx===6) { if (!selectedChoices['budget']) { shakeAndError('err-budget'); return false; } }
+  return true;
+}
+function shakeAndError(id) {
+  showError(id);
+  const s=document.querySelector('.slide.active');
+  s.classList.remove('shake'); void s.offsetWidth; s.classList.add('shake');
+  setTimeout(()=>s.classList.remove('shake'),400);
+  playSound('error');
+  haptic('error');
+}
+function showError(id) { const el=document.getElementById(id); if(el){el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000);} }
+function clearErrors() { document.querySelectorAll('.error-msg').forEach(e=>e.classList.remove('show')); }
+function validatePhoneLive(input) {
+  const digits = input.value.replace(/\D/g,'');
+  const wrap = input.closest('.phone-wrap');
+  if (digits.length >= 10) {
+    wrap.style.setProperty('--phone-valid-color', 'var(--green)');
+    input.style.color = 'var(--green)';
+  } else {
+    input.style.color = 'var(--text-primary)';
+  }
+}
+const ICON_VALID = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>`;
+const ICON_INVALID = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>`;
+
+function validateEmailLive(input) {
+  const icon = document.getElementById('email-icon');
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+  const hasInput = input.value.length > 3;
+  icon.innerHTML = hasInput ? (valid ? ICON_VALID : ICON_INVALID) : '';
+  icon.className = 'input-icon' + (hasInput ? ' show ' + (valid ? 'valid' : 'invalid') : '');
+}
+
+// Choices
+function particleBurst(btn) {
+  const rect = btn.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const colors = ['#f4c430','#e74c3c','#3498db','#2ecc71','#9b59b6','#e67e22','#1abc9c','#ff6b9d'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.classList.add('particle-burst');
+    const angle = (i / 18) * Math.PI * 2;
+    const dist = 40 + Math.random() * 55;
+    const px = Math.cos(angle) * dist;
+    const py = Math.sin(angle) * dist;
+    const size = 4 + Math.random() * 5;
+    p.style.cssText = `left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;background:${colors[i%colors.length]};--px:${px}px;--py:${py}px;animation-duration:${0.45+Math.random()*0.3}s`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 800);
+  }
+}
+
+function selectChoice(btn, field, key) {
+  const group=btn.closest('.choices');
+  group.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedChoices[field]=btn.dataset.value;
+  playSound('click');
+  haptic('light');
+  particleBurst(btn);
+  saveProgress();
+  if (field==='interest') {
+    if (key==='pricing') { document.getElementById('slide-budget').classList.add('visible'); currentFlow=[0,1,2,3,4,5,6,7,8]; }
+    else { document.getElementById('slide-budget').classList.remove('visible'); currentFlow=[...BASE_FLOW]; }
+    document.getElementById('msg-q-number').textContent = key==='pricing'?'07 →':'06 →';
+  }
+  setTimeout(()=>{ if(validateCurrent()) goToSlideByFlow(currentFlowIdx+1); },380);
+}
+
+// Lead score
+function showLeadScore() {
+  const data = { interest:selectedChoices['interest']||'', budget:selectedChoices['budget']||'', phone:document.getElementById('field-phone').value, message:document.getElementById('field-message').value, utm_source:getUTMs().utm_source };
+  const score=scoreLead(data);
+  const badge=document.getElementById('leadScoreBadge');
+  badge.textContent='Lead Score: '+score;
+  badge.className='lead-score-badge '+(score.includes('Hot')?'hot':score.includes('Warm')?'warm':'cold');
+
+  // Morphing SVG check animation
+  setTimeout(()=>{
+    const arc=document.getElementById('checkArc');
+    const tick=document.getElementById('checkTick');
+    if(arc){arc.style.strokeDashoffset='0';}
+    if(tick){tick.style.strokeDashoffset='0';}
+  },120);
+
+  // Score card flip
+  setTimeout(()=>{ badge.classList.add('flipped'); },900);
+
+  // Animated counter on reset (for next time welcome shows)
+  animateCounter(0,240,1600);
+}
+
+function animateCounter(from,to,duration){
+  const el=document.getElementById('counterNum'); if(!el)return;
+  const start=performance.now();
+  function step(now){
+    const p=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.floor(from+(to-from)*ease);
+    if(p<1)requestAnimationFrame(step);
+    else el.textContent=to;
+  }
+  requestAnimationFrame(step);
+}
+
+// Submit
+function submitViaGet(payload) {
+  return new Promise(resolve=>{
+    const params=Object.entries(payload).map(([k,v])=>encodeURIComponent(k)+'='+encodeURIComponent(v)).join('&');
+    fetch(SHEET_URL+'?'+params,{method:'GET',mode:'no-cors'}).then(()=>resolve()).catch(()=>resolve());
+    setTimeout(resolve,5000);
+  });
+}
+async function submitForm() {
+  const overlay=document.getElementById('submittingOverlay');
+  overlay.classList.add('show');
+  const utms=getUTMs();
+  const payload={
+    timestamp:new Date().toISOString(),
+    name:document.getElementById('field-name').value.trim(),
+    email:document.getElementById('field-email').value.trim(),
+    phone:(document.getElementById('field-phone').value.trim() ? '+91 ' + document.getElementById('field-phone').value.trim() : ''),
+    company:document.getElementById('field-company').value.trim(),
+    interest:selectedChoices['interest']||'',
+    budget:selectedChoices['budget']||'N/A',
+    message:document.getElementById('field-message').value.trim(),
+    lead_score:scoreLead({interest:selectedChoices['interest']||'',budget:selectedChoices['budget']||'',phone:document.getElementById('field-phone').value,message:document.getElementById('field-message').value,utm_source:utms.utm_source}),
+    utm_source:utms.utm_source,utm_medium:utms.utm_medium,utm_campaign:utms.utm_campaign,referrer:utms.referrer,
+    language:currentLang
+  };
+  await submitViaGet(payload);
+  overlay.classList.remove('show');
+  try{localStorage.removeItem('lf_progress');}catch(e){}
+  goToSlideByFlow(currentFlow.length-1);
+}
+
+// Reset
+function resetForm() {
+  ['field-name','field-email','field-phone','field-company','field-message'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+  Object.keys(selectedChoices).forEach(k=>delete selectedChoices[k]);
+  document.getElementById('slide-budget').classList.remove('visible');
+  currentFlow=[...BASE_FLOW]; currentFlowIdx=0;
+  document.getElementById('socialProof').style.display='flex';
+  exitShown=false;
+  goToSlideByFlow(0);
+  try{localStorage.removeItem('lf_progress');}catch(e){}
+  // Reset SVG check
+  const arc=document.getElementById('checkArc');const tick=document.getElementById('checkTick');
+  if(arc)arc.style.strokeDashoffset='144.5';if(tick)tick.style.strokeDashoffset='34';
+  const badge=document.getElementById('leadScoreBadge');
+  if(badge)badge.classList.remove('flipped');
+}
+
+// Keyboard
+document.addEventListener('keydown', e=>{
+  const idx=currentFlow[currentFlowIdx];
+  if (e.key==='Enter'&&idx>0&&idx<8) {
+    if (document.activeElement.tagName==='TEXTAREA') return;
+    e.preventDefault();
+    if (idx===7) submitForm(); else nextSlide();
+  }
+  if (e.key==='Escape') dismissExitPopup(false);
+});
+
+// ══════════════════════════════════════════════
+// SOUND ENGINE
+// ══════════════════════════════════════════════
+let audioCtx=null;
+function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function playSound(type){
+  try{
+    const ctx=getAudioCtx(),now=ctx.currentTime;
+    const osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    if(type==='whoosh'){osc.type='sine';osc.frequency.setValueAtTime(220,now);osc.frequency.exponentialRampToValueAtTime(440,now+.18);gain.gain.setValueAtTime(.08,now);gain.gain.exponentialRampToValueAtTime(.001,now+.22);osc.start(now);osc.stop(now+.22);}
+    else if(type==='click'){osc.type='sine';osc.frequency.setValueAtTime(600,now);osc.frequency.exponentialRampToValueAtTime(300,now+.08);gain.gain.setValueAtTime(.1,now);gain.gain.exponentialRampToValueAtTime(.001,now+.1);osc.start(now);osc.stop(now+.1);}
+    else if(type==='error'){osc.type='sawtooth';osc.frequency.setValueAtTime(120,now);osc.frequency.exponentialRampToValueAtTime(80,now+.15);gain.gain.setValueAtTime(.06,now);gain.gain.exponentialRampToValueAtTime(.001,now+.18);osc.start(now);osc.stop(now+.18);}
+    else if(type==='success'){[[523,0],[659,.12],[784,.24]].forEach(([f,d])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.setValueAtTime(f,now+d);g.gain.setValueAtTime(0,now+d);g.gain.linearRampToValueAtTime(.12,now+d+.04);g.gain.exponentialRampToValueAtTime(.001,now+d+.45);o.start(now+d);o.stop(now+d+.5);});return;}
+    else if(type==='keypress'){osc.type='sine';osc.frequency.setValueAtTime(800,now);gain.gain.setValueAtTime(.03,now);gain.gain.exponentialRampToValueAtTime(.001,now+.05);osc.start(now);osc.stop(now+.05);}
+  }catch(e){}
+}
+document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('keydown',()=>playSound('keypress')));
+document.querySelectorAll('.ok-btn,.start-btn').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    const r=document.createElement('span');r.classList.add('ripple-effect');
+    const rect=btn.getBoundingClientRect();
+    r.style.left=(e.clientX-rect.left)+'px';r.style.top=(e.clientY-rect.top)+'px';
+    btn.appendChild(r);setTimeout(()=>r.remove(),600);
+  });
+});
+
+// ── Fireworks ──
+// ── Confetti ──
+const confettiColors=['#f4c430','#e74c3c','#3498db','#2ecc71','#9b59b6','#e67e22','#1abc9c'];
+function spawnConfetti(){
+  for(let i=0;i<80;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      p.classList.add('confetti-piece');
+      p.style.left=Math.random()*100+'vw';
+      p.style.top='-12px';
+      p.style.background=confettiColors[Math.floor(Math.random()*confettiColors.length)];
+      p.style.width=(6+Math.random()*8)+'px';
+      p.style.height=(6+Math.random()*8)+'px';
+      p.style.borderRadius=Math.random()>.5?'50%':'2px';
+      p.style.animationDuration=(1.8+Math.random()*2)+'s';
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(),4000);
+    },i*25);
+  }
+}
+
+// ── Cursor — zero-lag dot, smooth lerp ring ──
+const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0,cursorVisible=false;
+
+// Use transform3d — GPU composited, zero layout cost, zero lag
+function setDot(x,y){ dot.style.transform='translate3d('+(x-4)+'px,'+(y-4)+'px,0)'; }
+function setRing(x,y){ ring.style.transform='translate3d('+(x-18)+'px,'+(y-18)+'px,0)'; }
+
+function showCursor(){ if(!cursorVisible){cursorVisible=true;dot.style.opacity='1';ring.style.opacity='1';} }
+function hideCursor(){ cursorVisible=false;dot.style.opacity='0';ring.style.opacity='0'; }
+
+// Mouse — instant dot + spotlight
+const spotlightEl = document.getElementById('spotlight');
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  setDot(mx,my); showCursor();
+  // Spotlight follows cursor
+  if(spotlightEl){
+    const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+    const size = isDark ? 320 : 280;
+    const alpha = isDark ? '0.06' : '0.08';
+    spotlightEl.style.background = `radial-gradient(circle ${size}px at ${mx}px ${my}px, rgba(255,255,255,${alpha}) 0%, transparent 70%)`;
+  }
+},{passive:true});
+
+// Smooth ring lerp loop
+(function lerpRing(){
+  rx+=(mx-rx)*0.15; ry+=(my-ry)*0.15;
+  setRing(rx,ry);
+  requestAnimationFrame(lerpRing);
+})();
+
+document.querySelectorAll('button,input,textarea,a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('hovering'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('hovering'));
+});
+document.addEventListener('mousedown',()=>dot.classList.add('clicking'));
+document.addEventListener('mouseup',()=>dot.classList.remove('clicking'));
+
+// ════════════════════════════════════════════
+// HAPTIC FEEDBACK
+// ════════════════════════════════════════════
+function haptic(type) {
+  if (!window.navigator || !navigator.vibrate) return;
+  if (type === 'light')   navigator.vibrate(8);
+  else if (type === 'medium') navigator.vibrate(18);
+  else if (type === 'success') navigator.vibrate([12, 60, 20]);
+  else if (type === 'error')  navigator.vibrate([30, 40, 30]);
+}
+
+// ════════════════════════════════════════════
+// ANIMATED COUNTER (social proof "240+")
+// ════════════════════════════════════════════
+function runCounter(targetEl, target, duration) {
+  const start = performance.now();
+  function step(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    targetEl.textContent = Math.round(eased * target);
+    if (progress < 1) requestAnimationFrame(step);
+    else targetEl.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+
+// ════════════════════════════════════════════
+// SLOT MACHINE Q-NUMBER
+// ════════════════════════════════════════════
+function animateQNumber(slideEl, newNum) {
+  const digits = slideEl.querySelectorAll('.q-num-digit');
+  if (!digits.length) return;
+  const numStr = String(newNum).padStart(2, '0');
+  digits.forEach((d, i) => {
+    const newChar = numStr[i] || '';
+    if (d.textContent === newChar) return;
+    // Spin out
+    d.classList.add('spin-out');
+    setTimeout(() => {
+      d.textContent = newChar;
+      d.classList.remove('spin-out');
+      d.classList.add('dropped');
+      setTimeout(() => d.classList.remove('dropped'), 400);
+    }, 180);
+  });
+}
+
+// ════════════════════════════════════════════
+// KEYBOARD FIX (iOS / Android)
+// ════════════════════════════════════════════
+(function initKeyboardFix() {
+  if (!window.visualViewport) return;
+  let prevHeight = window.visualViewport.height;
+
+  window.visualViewport.addEventListener('resize', () => {
+    const vh = window.visualViewport.height;
+    const winH = window.innerHeight;
+    const keyboardH = winH - vh;
+    const isKeyboardOpen = keyboardH > 100;
+
+    document.body.classList.toggle('keyboard-open', isKeyboardOpen);
+
+    if (isKeyboardOpen) {
+      // Push slides container up so active input stays visible
+      const container = document.getElementById('slidesContainer');
+      const activeInput = document.querySelector('.slide.active input:focus, .slide.active textarea:focus');
+      if (container && activeInput) {
+        const inputRect = activeInput.getBoundingClientRect();
+        const inputBottom = inputRect.bottom;
+        const visibleBottom = vh - 16;
+        if (inputBottom > visibleBottom) {
+          const offset = inputBottom - visibleBottom + 16;
+          container.style.transform = `translateY(-${offset}px)`;
+        }
+      }
+    } else {
+      const container = document.getElementById('slidesContainer');
+      if (container) container.style.transform = '';
+    }
+    prevHeight = vh;
+  });
+})();
+
+// ── Init ──
+initLotties();
+initCanvasBg();
+startTypewriter();
+updateUI();
+restoreProgress();
+
+// Run counter when page loads
+const counterEl = document.getElementById('counterNum');
+if (counterEl) setTimeout(() => runCounter(counterEl, 240, 1800), 600);
+// Animate counter on welcome
+setTimeout(()=>animateCounter(0,240,1800),800);
+</script>
+</body>
+</html>
