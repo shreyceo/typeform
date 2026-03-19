@@ -354,9 +354,11 @@ td.muted{color:var(--text-secondary);font-size:11px}
 .set-btn.danger{background:rgba(192,57,43,.1);color:var(--red);border:1px solid rgba(192,57,43,.2)}
 .set-success{font-size:11px;color:var(--green);font-weight:600;opacity:0;transition:opacity .3s}
 .set-success.show{opacity:1}
-/* GA4 toast indicator */
+/* GA4 + Pixel indicators */
 .ga-indicator{width:8px;height:8px;border-radius:50%;background:var(--bs);display:inline-block;margin-right:4px}
 .ga-indicator.active{background:var(--green)}
+.px-indicator{width:8px;height:8px;border-radius:50%;background:var(--bs);display:inline-block;margin-right:4px}
+.px-indicator.active{background:#1877f2}
 
 /* Print */
 @media print{
@@ -368,16 +370,132 @@ td.muted{color:var(--text-secondary);font-size:11px}
 
 /* Responsive */
 @media(max-width:1100px){.sg{grid-template-columns:repeat(3,1fr)}.cg{grid-template-columns:1fr 1fr}.ir{grid-template-columns:repeat(2,1fr)}.rc-grid{grid-template-columns:repeat(2,1fr)}}
+/* Hide on mobile */
+@media(max-width:700px){.hm{display:none!important}}
+
+/* ── MOBILE: tablets and large phones ── */
 @media(max-width:700px){
-  .sg{grid-template-columns:repeat(2,1fr)}
-  .cg,.ir,.rcard .rc-grid{display:none}
-  .tb-btn span{display:none}
-  .bdg:not(.live):not(.unread){display:none}
+  /* Charts / insights hidden on small screens */
+  .cg,.ir,.rcard{display:none}
+
+  /* Stat grid: 2 cols */
+  .sg{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+  .sc{padding:12px 14px}
+  .sv{font-size:26px}
+  .sl{font-size:9px}
+
+  /* Main padding */
+  .main{padding:12px 12px max(32px,calc(8px + var(--safe-bottom)));
+    padding-left:max(12px,env(safe-area-inset-left));
+    padding-right:max(12px,env(safe-area-inset-right))}
+
+  /* Filters: stack neatly */
+  .fb{gap:6px}
+  .sw{min-width:120px}
   .date-range{display:none}
-  table{min-width:640px}
-  .date-in{width:95px}
+  .fs{font-size:11px;padding:7px 8px}
+
+  /* Presets: smaller */
+  .presets{gap:4px}
+  .preset-btn{font-size:10px;padding:3px 8px}
+  .preset-save{font-size:10px;padding:3px 8px}
+
+  /* Table */
+  table{min-width:600px}
+
+  /* Bulk bar */
+  .bb{gap:4px}
+  .bb span{font-size:11px}
+  .bb-btn{font-size:10px;padding:3px 8px}
 }
-@media(max-width:400px){.sg{grid-template-columns:repeat(2,1fr)}.sv{font-size:22px}}
+
+/* ── MOBILE: topbar — the main fix ── */
+@media(max-width:700px){
+  .tb{height:52px;padding:0 12px;
+    padding-left:max(12px,env(safe-area-inset-left));
+    padding-right:max(12px,env(safe-area-inset-right));
+    gap:6px}
+
+  /* Brand stays visible */
+  .brand{font-size:15px}
+
+  /* Hide all badges except live/unread */
+  .bdg:not(.live):not(.unread){display:none}
+
+  /* View switch: compact */
+  .vs{padding:1px;gap:0}
+  .vb{padding:3px 7px;font-size:10px;gap:2px}
+  .vb svg{width:10px;height:10px}
+
+  /* All topbar buttons: icon only, no label */
+  .tb-btn span{display:none}
+  .tb-btn{padding:5px 7px;gap:0}
+  .tb-btn svg{width:13px;height:13px}
+
+  /* Theme toggle smaller */
+  .tm{width:34px;height:19px}
+  .tk{width:13px;height:13px;font-size:8px}
+  [data-theme="dark"] .tk{transform:translateX(15px)}
+
+  /* Right side: tighter gap, allow wrapping on very small screens */
+  .tb-r{gap:4px;flex-wrap:nowrap;overflow:hidden}
+  .tb-l{gap:6px;overflow:hidden;min-width:0;flex-shrink:1}
+}
+
+/* ── SMALL PHONES: iPhone SE, Galaxy A series ── */
+@media(max-width:390px){
+  .brand{font-size:14px}
+  .vs{display:none} /* hide view switch, default to table */
+  .tb-r{gap:3px}
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .sv{font-size:22px}
+  .sc{padding:10px 11px}
+}
+
+/* ── KANBAN on mobile: horizontal scroll ── */
+@media(max-width:700px){
+  .kb{gap:8px;padding-bottom:max(16px,var(--safe-bottom))}
+  .kc{min-width:200px}
+  .kcard{padding:9px 11px}
+  .kname{font-size:11px}
+  .kco{font-size:9px}
+  .ktag{font-size:8px;padding:1px 5px}
+}
+
+/* ── MODAL: full bottom sheet on mobile ── */
+@media(max-width:600px){
+  .md{border-radius:18px 18px 0 0;max-height:94vh;padding-bottom:max(16px,var(--safe-bottom))}
+  .mh{padding:16px 18px 12px}
+  .mb{padding:12px 18px 16px}
+  .ma{padding:0 18px 16px;gap:6px}
+  .mb-btn{padding:8px 12px;font-size:12px}
+  .dr{gap:8px;padding:7px 0}
+  .dl{min-width:74px;font-size:9px}
+  .dv{font-size:12px}
+  .nta{min-height:52px;font-size:12px}
+  .nin{font-size:12px;padding:6px 9px}
+}
+
+/* ── SETTINGS PANEL on mobile ── */
+@media(max-width:600px){
+  .set-panel{border-radius:18px 18px 0 0;max-height:94vh}
+  .set-body{padding:12px 16px 18px;gap:16px}
+  .set-hdr{padding:16px 18px 12px}
+  .set-input{font-size:12px;padding:7px 9px}
+  .set-btn{padding:7px 12px;font-size:11px}
+  .set-section-title{font-size:9px}
+  .set-label{font-size:12px}
+  .set-sub{font-size:10px}
+}
+
+/* ── LOCK SCREEN on mobile ── */
+@media(max-width:500px){
+  .lc{padding:32px 24px}
+  .lt{font-size:19px}
+  .li{font-size:30px;margin-bottom:12px}
+  .lin{font-size:16px;letter-spacing:4px}
+  .lb{padding:11px;font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -417,14 +535,14 @@ td.muted{color:var(--text-secondary);font-size:11px}
       </div>
       <button class="tb-btn" id="btnR" onclick="loadLeads()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg><span>Refresh</span></button>
       <div class="ctw">
-        <button class="tb-btn" onclick="toggleColMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Cols</span></button>
+        <button class="tb-btn hm" onclick="toggleColMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Cols</span></button>
         <div class="cdrop" id="colDrop"></div>
       </div>
-      <button class="tb-btn" onclick="toggleDensity()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Density</span></button>
+      <button class="tb-btn hm" onclick="toggleDensity()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Density</span></button>
       <button class="tb-btn primary" onclick="exportCSV()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span>Export</span></button>
       <button class="tm" onclick="toggleTheme()"><div class="tk" id="themeKnob">☀️</div></button>
       <button class="tb-btn" onclick="openSettings()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span>Settings</span></button>
-      <button class="tb-btn" onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg><span>Out</span></button>
+      <button class="tb-btn hm" onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg><span>Out</span></button>
     </div>
   </header>
 
@@ -582,6 +700,27 @@ td.muted{color:var(--text-secondary);font-size:11px}
         <div style="font-size:11px;color:var(--text-secondary);margin-top:2px" id="gaStatus">Not configured</div>
       </div>
 
+      <!-- Meta Pixel -->
+      <div class="set-section">
+        <div class="set-section-title">📘 Meta / Facebook Pixel</div>
+        <div class="set-row">
+          <div>
+            <div class="set-label"><span class="px-indicator" id="pxIndicator"></span>Pixel ID</div>
+            <div class="set-sub">15–16 digit number from Events Manager</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input class="set-input" id="pxId" placeholder="1234567890123456" style="max-width:100%;flex:1" value="" inputmode="numeric">
+          <button class="set-btn primary" onclick="savePixel()">Save & Activate</button>
+        </div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:2px" id="pxStatus">Not configured</div>
+        <div style="margin-top:8px;padding:10px 12px;background:var(--abg);border-radius:8px;font-size:11px;color:var(--text-secondary);line-height:1.6">
+          <strong style="color:var(--text-primary)">How to get your Pixel ID:</strong><br>
+          Go to <strong>business.facebook.com</strong> → Events Manager → your Pixel → copy the ID number shown at the top.
+          Once activated, every form submission fires a <strong>Lead</strong> event automatically.
+        </div>
+      </div>
+
       <!-- Add to Home Screen / PWA -->
       <div class="set-section">
         <div class="set-section-title">📱 Install App</div>
@@ -623,6 +762,10 @@ td.muted{color:var(--text-secondary);font-size:11px}
       <div class="set-section">
         <div class="set-section-title">⚠️ Danger Zone</div>
         <div class="set-row">
+          <div><div class="set-label">Logout</div><div class="set-sub">End your session</div></div>
+          <button class="set-btn danger" onclick="closeSettings();logout()">Logout</button>
+        </div>
+        <div class="set-row" style="margin-top:8px">
           <div><div class="set-label">Clear All Local Data</div><div class="set-sub">Removes statuses, notes, stars, deals</div></div>
           <button class="set-btn danger" onclick="clearAllData()">Clear Data</button>
         </div>
@@ -1294,6 +1437,10 @@ function openSettings(){
   const savedGA = lsG('lf_ga_id','');
   if(savedGA){ document.getElementById('gaId').value=savedGA; updateGAIndicator(true); document.getElementById('gaStatus').textContent='Active: '+savedGA; }
   else { updateGAIndicator(false); }
+  // Populate Pixel status
+  const savedPX = lsG('lf_px_id','');
+  if(savedPX){ document.getElementById('pxId').value=savedPX; updatePxIndicator(true); document.getElementById('pxStatus').textContent='Active: '+savedPX; }
+  else { updatePxIndicator(false); }
   // Duplicate count
   const dups = findDuplicates();
   document.getElementById('dupCount').textContent = dups.length > 0 ? `⚠️ ${dups.length} duplicate email${dups.length>1?'s':''} found` : '✅ No duplicates found';
@@ -1354,6 +1501,39 @@ function injectGA(id){
 
 function gaEvent(name,params){
   if(window.gtag) gtag('event',name,params||{});
+}
+
+// ════════ META PIXEL ════════
+function savePixel(){
+  const id = document.getElementById('pxId').value.trim().replace(/\D/g,'');
+  if(!id || id.length < 10){ showToast('Enter a valid Pixel ID (15–16 digits)'); snd('error'); return; }
+  lsS('lf_px_id', id);
+  injectPixel(id);
+  updatePxIndicator(true);
+  document.getElementById('pxStatus').textContent='Active: '+id;
+  snd('success'); showToast('Meta Pixel activated ✓'); logAct('Pixel configured', id);
+}
+
+function updatePxIndicator(active){
+  const el=document.getElementById('pxIndicator');
+  if(el) el.className='px-indicator'+(active?' active':'');
+}
+
+function injectPixel(id){
+  if(document.getElementById('px-script')) return;
+  // Inject fbq base code
+  (function(f,b,e,v,n,t,s){
+    if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+    t=b.createElement(e);t.async=!0;t.src=v;t.id='px-script';
+    s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)
+  })(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', id);
+  fbq('track', 'PageView');
+}
+
+function firePixelLead(){
+  if(window.fbq) fbq('track', 'Lead');
 }
 
 // ════════ PWA INSTALL ════════
@@ -1496,10 +1676,12 @@ window.unlock = function(){
   }
 };
 
-// ════════ INIT GA IF SAVED ════════
+// ════════ INIT GA + PIXEL IF SAVED ════════
 (function(){
   const savedGA=lsG('lf_ga_id','');
   if(savedGA){ injectGA(savedGA); updateGAIndicator(true); }
+  const savedPX=lsG('lf_px_id','');
+  if(savedPX){ injectPixel(savedPX); updatePxIndicator(true); }
 })();
 
 // ════════ UTILS ════════
