@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A2540"/>
+      <stop offset="100%" stop-color="#1A4A8A"/>
+    </linearGradient>
+    <linearGradient id="bl" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a6cf6"/>
+      <stop offset="100%" stop-color="#3abff8"/>
+    </linearGradient>
+  </defs>
+  <!-- Document body -->
+  <rect x="4" y="2" width="56" height="60" rx="10" fill="url(#bg)"/>
+  <!-- Dog-ear corner -->
+  <polygon points="46,2 60,16 46,16" fill="rgba(255,255,255,.12)"/>
+  <!-- Blue accent bar at bottom -->
+  <rect x="4" y="50" width="56" height="12" rx="0" fill="url(#bl)"/>
+  <rect x="4" y="54" width="56" height="8" rx="0" fill="url(#bl)"/>
+  <!-- Form field label lines -->
+  <rect x="13" y="18" width="14" height="4" rx="2" fill="rgba(58,191,248,.9)"/>
+  <rect x="13" y="27" width="36" height="6" rx="3" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+  <rect x="13" y="36" width="9" height="4" rx="2" fill="rgba(58,191,248,.9)"/>
+  <!-- Checkmark in accent bar -->
+  <polyline points="11,57 21,62 40,50" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
