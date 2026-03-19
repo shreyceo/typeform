@@ -2,14 +2,16 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>404 — Page Not Found</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a6cf6">
+<title>404 — Page Not Found | LeadForm</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#f5f0e8;--text-primary:#1a1708;--text-secondary:#6b6540;
-  --border:#d8d0bc;--answer-bg:#ede8dc;--green:#2d6a4f;
+  --border:#d8d0bc;--answer-bg:#ede8dc;
   --btn-bg:#1a1708;--btn-color:#fff;
 }
 [data-theme="dark"]{
@@ -17,87 +19,80 @@
   --border:#2e2b22;--answer-bg:#1c1b16;--btn-bg:#f0ebe0;--btn-color:#1a1708;
 }
 *{cursor:none!important}
-.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--text-primary);border-radius:50%;pointer-events:none;z-index:9999;will-change:transform;transform:translate3d(-200px,-200px,0);transition:background .3s,opacity .3s;opacity:0}
-.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:2px solid rgba(26,23,8,.3);border-radius:50%;pointer-events:none;z-index:9998;will-change:transform;transform:translate3d(-200px,-200px,0);transition:border-color .3s,width .2s,height .2s,opacity .3s;opacity:0}
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--text-primary);border-radius:50%;pointer-events:none;z-index:9999;transform:translate3d(-200px,-200px,0);transition:background .3s,opacity .3s;opacity:0}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:2px solid rgba(26,23,8,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate3d(-200px,-200px,0);transition:border-color .3s,width .2s,height .2s,opacity .3s;opacity:0}
 [data-theme="dark"] .cursor-ring{border-color:rgba(240,235,224,.3)}
 .cursor-ring.hovering{width:50px;height:50px;border-color:var(--text-primary)}
 .cursor-dot.clicking{width:4px;height:4px}
-
 html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--text-primary);overflow:hidden;-webkit-tap-highlight-color:transparent}
-
-/* Aurora bg */
 .aurora-bg{position:fixed;inset:0;z-index:0;background:var(--bg);transition:background .6s}
 #auroraCanvas{position:absolute;inset:0;width:100%;height:100%}
-
-/* Grain */
 .grain{position:fixed;inset:0;z-index:1;pointer-events:none}
 .grain::before{content:'';position:absolute;inset:-50%;width:200%;height:200%;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size:200px 200px;opacity:.05;mix-blend-mode:multiply;animation:grainShift .9s steps(1) infinite}
 @keyframes grainShift{0%{transform:translate(0,0)}25%{transform:translate(-2%,-3%)}50%{transform:translate(3%,1%)}75%{transform:translate(-1%,3%)}100%{transform:translate(0,0)}}
-
-/* Spotlight */
 .spotlight{position:fixed;inset:0;z-index:2;pointer-events:none}
 
-/* Glass card */
+/* nav logo */
+.logo-nav{position:fixed;top:max(18px,env(safe-area-inset-top));left:24px;z-index:90;display:flex;align-items:center;gap:9px;animation:slideIn .7s cubic-bezier(.22,1,.36,1) both}
+@keyframes slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+.logo-nav-icon{width:30px;height:36px;border-radius:6px;background:linear-gradient(145deg,#0A2540,#1A4A8A);position:relative;overflow:hidden;flex-shrink:0}
+.logo-nav-icon-bar{position:absolute;bottom:0;left:0;right:0;height:10px;background:linear-gradient(90deg,#1a6cf6,#3abff8)}
+.logo-nav-icon-lines{position:absolute;top:7px;left:5px;right:5px}
+.logo-nav-icon-lines b{display:block;height:2.5px;border-radius:2px;margin-bottom:3px}
+.logo-nav-icon-lines b:nth-child(1){width:10px;background:rgba(58,191,248,.9)}
+.logo-nav-icon-lines b:nth-child(2){width:100%;background:rgba(255,255,255,.25)}
+.logo-nav-icon-lines b:nth-child(3){width:75%;background:rgba(255,255,255,.25)}
+.logo-nav-text{font-family:'Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;font-size:20px;display:flex;align-items:baseline}
+.logo-nav-text em{font-style:normal;font-weight:700;color:var(--text-primary)}
+.logo-nav-text span{font-weight:400;background:linear-gradient(90deg,#1a6cf6,#3abff8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* card */
 .card-wrap{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:24px}
-.card{
-  background:rgba(255,253,248,0.55);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
-  border:1px solid rgba(255,255,255,0.7);
-  border-radius:28px;
-  box-shadow:0 8px 40px rgba(60,50,20,.12), 0 2px 8px rgba(60,50,20,.08);
-  padding:56px 52px;
-  max-width:520px;width:100%;
-  text-align:center;
-  position:relative;overflow:hidden;
-}
-[data-theme="dark"] .card{background:rgba(20,18,12,.55);border-color:rgba(255,255,255,.08);box-shadow:0 8px 40px rgba(0,0,0,.4)}
-.card::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.8) 50%,transparent);border-radius:100%}
+.card{background:rgba(255,253,248,.58);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid rgba(255,255,255,.72);border-radius:28px;box-shadow:0 8px 40px rgba(60,50,20,.12),0 2px 8px rgba(60,50,20,.08);padding:36px 52px 48px;max-width:500px;width:100%;text-align:center;position:relative;overflow:hidden;animation:cardIn .8s cubic-bezier(.22,1,.36,1) .1s both}
+@keyframes cardIn{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+[data-theme="dark"] .card{background:rgba(20,18,12,.58);border-color:rgba(255,255,255,.08);box-shadow:0 8px 40px rgba(0,0,0,.45)}
+.card::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8) 50%,transparent)}
 [data-theme="dark"] .card::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.12) 50%,transparent)}
 
-/* 404 number */
-.err-number{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(80px,18vw,140px);
-  font-weight:900;
-  line-height:1;
-  margin-bottom:8px;
-  background:linear-gradient(160deg,#1a1708 0%,#3d2e0a 40%,#1a1708 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  display:block;
-  animation:float404 4s ease-in-out infinite;
-}
+/* logo canvas — CSS size fixed, pixel buffer scaled by DPR */
+#logoAnim{display:block;margin:0 auto 4px;width:240px;height:96px}
+
+.err-number{font-family:'Playfair Display',serif;font-size:clamp(76px,16vw,130px);font-weight:900;line-height:1;margin-bottom:6px;background:linear-gradient(160deg,#1a1708 0%,#3d2e0a 40%,#1a1708 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;animation:float404 4s ease-in-out infinite}
 [data-theme="dark"] .err-number{background:linear-gradient(160deg,#f5f0e8 0%,#e8dcc8 45%,#c8b898 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 @keyframes float404{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-
-.err-emoji{font-size:36px;margin-bottom:16px;display:block;animation:wobble 2.5s ease-in-out infinite}
-@keyframes wobble{0%,100%{transform:rotate(0)}20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-4deg)}80%{transform:rotate(4deg)}}
-
-.err-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,32px);font-weight:900;color:var(--text-primary);margin-bottom:10px;line-height:1.2}
-.err-sub{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:36px;max-width:360px;margin-left:auto;margin-right:auto}
-
-.btn-home{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--btn-bg);color:var(--btn-color);border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;letter-spacing:.2px;position:relative;overflow:hidden;transition:opacity .2s,transform .15s}
-.btn-home:hover{opacity:.88;transform:translateY(-2px)}
+.err-title{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,30px);font-weight:900;color:var(--text-primary);margin-bottom:10px;line-height:1.2}
+.err-sub{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:32px;max-width:340px;margin-left:auto;margin-right:auto}
+.btn-home{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:linear-gradient(135deg,#1a6cf6,#0a2540);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;letter-spacing:.2px;position:relative;overflow:hidden;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:0 4px 20px rgba(26,108,246,.32)}
+.btn-home:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 28px rgba(26,108,246,.45)}
 .btn-home svg{width:16px;height:16px;flex-shrink:0}
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);width:10px;height:10px;pointer-events:none;animation:rpl .55s ease-out forwards}
 @keyframes rpl{0%{transform:translate(-50%,-50%) scale(0);opacity:.5}100%{transform:translate(-50%,-50%) scale(4);opacity:0}}
-
-/* Floating particles */
-.particle{position:fixed;border-radius:50%;pointer-events:none;z-index:3;animation:floatParticle linear infinite}
-@keyframes floatParticle{0%{transform:translateY(110vh) rotate(0deg);opacity:0}10%{opacity:.6}90%{opacity:.4}100%{transform:translateY(-20px) rotate(360deg);opacity:0}}
-
-/* Theme toggle */
-.theme-toggle{position:fixed;top:max(22px,env(safe-area-inset-top));right:24px;z-index:90;width:44px;height:24px;border-radius:12px;background:var(--answer-bg);border:1.5px solid var(--border);position:fixed;transition:background .3s}
+.particle{position:fixed;border-radius:50%;pointer-events:none;z-index:3;animation:floatP linear infinite}
+@keyframes floatP{0%{transform:translateY(110vh) rotate(0deg);opacity:0}10%{opacity:.5}90%{opacity:.3}100%{transform:translateY(-20px) rotate(360deg);opacity:0}}
+.theme-toggle{position:fixed;top:max(22px,env(safe-area-inset-top));right:24px;z-index:90;width:44px;height:24px;border-radius:12px;background:var(--answer-bg);border:1.5px solid var(--border);transition:background .3s}
 .theme-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--btn-bg);display:flex;align-items:center;justify-content:center;font-size:10px;transition:transform .3s}
 [data-theme="dark"] .theme-knob{transform:translateX(20px)}
-
 @media(max-width:500px){
-  .card{padding:36px 24px;border-radius:20px}
-  .err-sub{font-size:14px}
-  .btn-home{font-size:14px;padding:12px 22px}
+  .card{padding:28px 20px 38px;border-radius:20px}
+  .err-sub{font-size:14px}.btn-home{font-size:14px;padding:12px 20px}
+  .logo-nav-text{font-size:17px}
+  #logoAnim{width:200px;height:80px}
+}
+/* Hide custom cursor on touch devices */
+@media(hover:none){
+  .cursor-dot,.cursor-ring{display:none!important}
+  *{cursor:auto!important}
+}
+/* Sound toggle button */
+.snd-btn{
+  position:fixed;bottom:max(18px,env(safe-area-inset-bottom));
+  right:max(20px,env(safe-area-inset-right));
+  z-index:90;width:32px;height:32px;border-radius:8px;
+  background:var(--answer-bg);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:background .18s;
 }
 </style>
 </head>
@@ -107,104 +102,432 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--text-primary)
 <div class="grain"></div>
 <div class="spotlight" id="spotlight"></div>
 
+<div class="logo-nav">
+  <div class="logo-nav-icon">
+    <div class="logo-nav-icon-lines"><b></b><b></b><b></b></div>
+    <div class="logo-nav-icon-bar"></div>
+  </div>
+  <div class="logo-nav-text"><em>Lead</em><span>Form</span></div>
+</div>
+
 <button class="theme-toggle" onclick="toggleTheme()" style="position:fixed;top:max(22px,env(safe-area-inset-top));right:24px;z-index:90">
   <div class="theme-knob" id="themeKnob">☀️</div>
 </button>
 
 <div class="card-wrap">
   <div class="card">
-    <span class="err-emoji">🗺️</span>
+    <canvas id="logoAnim"></canvas>
     <span class="err-number">404</span>
-    <h1 class="err-title">Oops, wrong turn.</h1>
-    <p class="err-sub">The page you're looking for doesn't exist or may have been moved. Let's get you back on track.</p>
+    <h1 class="err-title">This page took a wrong turn.</h1>
+    <p class="err-sub">Looks like your form flew off course. The page you're looking for doesn't exist — but your leads are still waiting for you.</p>
     <a href="index.html" class="btn-home" id="homeBtn">
-      Take me home
+      Back to form
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
     </a>
   </div>
 </div>
 
+<!-- Sound toggle -->
+<button class="snd-btn" id="sndBtn" title="Toggle sound" onclick="toggleSnd()">🔊</button>
+
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <script>
-// Theme
+// ─────────────────────────────────────────
+//  Theme
+// ─────────────────────────────────────────
 function toggleTheme(){
-  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
-  document.documentElement.setAttribute('data-theme', isDark?'light':'dark');
-  document.getElementById('themeKnob').textContent = isDark?'☀️':'🌙';
-  try{localStorage.setItem('lf_theme', isDark?'light':'dark');}catch(e){}
+  const dk=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',dk?'light':'dark');
+  document.getElementById('themeKnob').textContent=dk?'☀️':'🌙';
+  try{localStorage.setItem('lf_theme',dk?'light':'dark');}catch(e){}
+  // Reset cached Lead width so it re-measures with correct color context
+  try{ _leadW=0; }catch(e){}
 }
 (function(){
-  try{const t=localStorage.getItem('lf_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeKnob').textContent='🌙';}}catch(e){}
-})();
+  try{
+    const s=localStorage.getItem('lf_theme');
+    if(s){
+      document.documentElement.setAttribute('data-theme',s);
+      document.getElementById('themeKnob').textContent=s==='dark'?'🌙':'☀️';
+    } else if(window.matchMedia('(prefers-color-scheme:dark)').matches){
+      document.documentElement.setAttribute('data-theme','dark');
+      document.getElementById('themeKnob').textContent='🌙';
+    }
+  }catch(e){}
+}());
 
-// Aurora
+// ─────────────────────────────────────────
+//  Logo Animation — NEW SEQUENCE
+//  1. Doc + "LeadForm" wordmark appear TOGETHER
+//  2. Both hold
+//  3. Page folds into plane while wordmark stays
+//  4. Plane launches + flies (WHOOSH sound)
+//  5. Wordmark fades out as plane exits
+//  6. Loop
+// ─────────────────────────────────────────
 (function(){
-  const canvas=document.getElementById('auroraCanvas');
-  const ctx=canvas.getContext('2d');
-  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
-  resize(); window.addEventListener('resize',resize);
+  const el = document.getElementById('logoAnim');
+  const CW = 240, CH = 96;
+  const DPR = Math.min(window.devicePixelRatio || 1, 3);
+  el.width  = CW * DPR;
+  el.height = CH * DPR;
+  el.style.width  = CW + 'px';
+  el.style.height = CH + 'px';
+  const cx = el.getContext('2d');
+  cx.scale(DPR, DPR);
+
+  // ── Helpers ──
+  const clamp  = (v,a,b) => Math.max(a,Math.min(b,v));
+  const lerp   = (a,b,t) => a+(b-a)*t;
+  const ph     = (t,a,b) => clamp((t-a)/(b-a),0,1);
+  const easeOut= t => 1-(1-t)**3;
+  const easeIO = t => t<.5 ? 4*t*t*t : 1-((-2*t+2)**3)/2;
+  const easeOutBack = t => { const c=1.70158; return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2); };
+
+  function blueGrad(x1,y1,x2,y2){
+    const g=cx.createLinearGradient(x1,y1,x2,y2);
+    g.addColorStop(0,'#1a6cf6'); g.addColorStop(1,'#3abff8'); return g;
+  }
+  function navyGrad(x,y,w,h){
+    const g=cx.createLinearGradient(x,y,x+w,y+h);
+    g.addColorStop(0,'#0A2540'); g.addColorStop(1,'#1A4A8A'); return g;
+  }
+
+  // ── Draw document ──
+  function drawDoc(alpha, lineA, foldT){
+    if(alpha<.005) return;
+    cx.save();
+    cx.globalAlpha = alpha;
+    const x=8, y=4, w=58, h=76, r=7;
+    const px=x+w/2, py=y+h/2;
+    cx.translate(px,py);
+    cx.rotate(-foldT*0.38);
+    cx.scale(1-foldT*0.22, 1-foldT*0.30);
+    cx.translate(-px,-py);
+    // shadow
+    cx.shadowColor='rgba(10,37,64,.28)'; cx.shadowBlur=12; cx.shadowOffsetY=4;
+    // body
+    cx.beginPath();
+    cx.moveTo(x+r,y); cx.lineTo(x+w-15,y);
+    cx.lineTo(x+w,y+15); cx.lineTo(x+w,y+h-r);
+    cx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    cx.lineTo(x+r,y+h); cx.quadraticCurveTo(x,y+h,x,y+h-r);
+    cx.lineTo(x,y+r); cx.quadraticCurveTo(x,y,x+r,y);
+    cx.closePath();
+    cx.fillStyle=navyGrad(x,y,w,h); cx.fill();
+    cx.shadowBlur=0;
+    // dog-ear corner
+    cx.beginPath(); cx.moveTo(x+w-15,y); cx.lineTo(x+w,y+15); cx.lineTo(x+w-15,y+15); cx.closePath();
+    cx.fillStyle='rgba(255,255,255,.1)'; cx.fill();
+    cx.strokeStyle='rgba(255,255,255,.18)'; cx.lineWidth=.7; cx.stroke();
+    // bottom accent bar
+    cx.beginPath(); cx.roundRect(x,y+h-18,w,18,[0,0,r,r]);
+    cx.fillStyle=blueGrad(x,y,x+w,y); cx.fill();
+    // field labels
+    cx.globalAlpha=alpha*lineA;
+    cx.fillStyle='rgba(58,191,248,.9)';
+    [[x+10,y+16,14],[x+10,y+33,10],[x+10,y+49,16]].forEach(([fx,fy,fw])=>{
+      cx.beginPath(); cx.roundRect(fx,fy,fw,3.5,2); cx.fill();
+    });
+    cx.strokeStyle='rgba(255,255,255,.2)'; cx.lineWidth=1;
+    [[x+10,y+23,w-20,7],[x+10,y+40,w-20,7]].forEach(([fx,fy,fw,fh])=>{
+      cx.beginPath(); cx.roundRect(fx,fy,fw,fh,3); cx.stroke();
+    });
+    // checkmark
+    cx.globalAlpha=alpha*lineA;
+    cx.strokeStyle='#fff'; cx.lineWidth=2.2; cx.lineCap='round'; cx.lineJoin='round';
+    cx.beginPath();
+    cx.moveTo(x+11,y+h-8); cx.lineTo(x+20,y+h-3); cx.lineTo(x+37,y+h-15);
+    cx.stroke();
+    cx.restore();
+  }
+
+  // ── Draw wordmark (Lead + Form appear simultaneously) ──
+  // leadA = alpha for "Lead", formA = alpha for "Form", tagA for tagline
+  // Pre-measure Lead width once fonts are loaded so Form never overlaps
+  let _leadW = 0;
+  function getLeadW(){
+    if(_leadW > 0) return _leadW;
+    cx.font='700 31px Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif';
+    _leadW = cx.measureText('Lead').width;
+    // Add a comfortable 3px gap between Lead and Form
+    return _leadW;
+  }
+
+  function drawWordmark(leadA, formA, tagA){
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    cx.save();
+
+    const lw = getLeadW();   // measured at runtime — no overlap ever
+    const startX = 80;
+    const gap = 3;           // px gap between Lead and Form
+
+    // "Lead" — bold serif
+    if(leadA > .005){
+      cx.globalAlpha = leadA;
+      cx.font='700 31px Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif';
+      cx.fillStyle = isDark ? '#f0ebe0' : '#0A2540';
+      cx.fillText('Lead', startX, 50);
+    }
+
+    // "Form" — light weight, blue gradient — placed after measured Lead width
+    if(formA > .005){
+      cx.globalAlpha = formA;
+      cx.font='400 31px Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif';
+      const formX = startX + lw + gap;
+      cx.fillStyle=blueGrad(formX, 0, formX+80, 0);
+      cx.fillText('Form', formX, 50);
+    }
+
+    // tagline + underline
+    if(tagA > .005){
+      cx.globalAlpha = tagA * 0.60;
+      cx.font='500 8px "Gill Sans","Gill Sans MT",Calibri,sans-serif';
+      cx.letterSpacing='2px';
+      cx.fillStyle='#1a6cf6';
+      cx.fillText('CAPTURE · CONVERT · CLOSE', startX, 64);
+      cx.letterSpacing='0px';
+      cx.globalAlpha = tagA * 0.28;
+      cx.fillStyle=blueGrad(startX,0,startX+148,0);
+      cx.fillRect(startX, 69, 148, 1.5);
+    }
+
+    cx.restore();
+  }
+
+  // ── Trail ──
+  const trailPts=[];
+  function drawTrail(alpha){
+    if(alpha<.005||trailPts.length<2) return;
+    cx.save();
+    for(let i=1;i<trailPts.length;i++){
+      const f=i/trailPts.length;
+      cx.beginPath();
+      cx.moveTo(trailPts[i-1].x,trailPts[i-1].y);
+      cx.lineTo(trailPts[i].x,trailPts[i].y);
+      cx.globalAlpha=f*f*alpha*0.7;
+      cx.strokeStyle=`hsl(${lerp(218,192,f)},88%,${lerp(48,70,f)}%)`;
+      cx.lineWidth=lerp(0.3,2.8,f); cx.lineCap='round'; cx.stroke();
+    }
+    cx.restore();
+  }
+
+  // ── Plane ──
+  function drawPlane(x,y,angle,alpha,wobble){
+    if(alpha<.005) return;
+    cx.save();
+    cx.globalAlpha=alpha;
+    cx.translate(x,y);
+    cx.rotate(angle+Math.sin(wobble)*0.055);
+    const s=0.62; cx.scale(s,s);
+    cx.beginPath(); cx.moveTo(-46,0); cx.lineTo(60,-16); cx.lineTo(20,13); cx.closePath();
+    const bg=cx.createLinearGradient(-46,0,60,-16);
+    bg.addColorStop(0,'#1a6cf6'); bg.addColorStop(1,'#083a7a');
+    cx.fillStyle=bg; cx.fill();
+    cx.beginPath(); cx.moveTo(-46,0); cx.lineTo(20,13); cx.lineTo(-4,27); cx.closePath();
+    cx.fillStyle='#1250ac'; cx.fill();
+    cx.beginPath(); cx.moveTo(-38,-.5); cx.lineTo(52,-14);
+    cx.strokeStyle='rgba(58,191,248,.55)'; cx.lineWidth=1.2; cx.stroke();
+    cx.beginPath(); cx.moveTo(-46,0); cx.lineTo(20,13);
+    cx.strokeStyle='rgba(58,191,248,.28)'; cx.lineWidth=.8; cx.stroke();
+    cx.beginPath(); cx.arc(56,-15,2.5,0,Math.PI*2);
+    cx.fillStyle='rgba(58,191,248,.72)'; cx.fill();
+    cx.restore();
+  }
+
+  // ── Bezier: launches from doc centre, arcs up-right, exits canvas ──
+  function bezier(t){
+    const sx=38,sy=48, c1x=80,c1y=2, c2x=160,c2y=18, ex=252,ey=40;
+    const q=1-t;
+    const x=q**3*sx+3*q*q*t*c1x+3*q*t*t*c2x+t**3*ex;
+    const y=q**3*sy+3*q*q*t*c1y+3*q*t*t*c2y+t**3*ey;
+    const dx=3*q*q*(c1x-sx)+6*q*t*(c2x-c1x)+3*t*t*(ex-c2x);
+    const dy=3*q*q*(c1y-sy)+6*q*t*(c2y-c1y)+3*t*t*(ey-c2y);
+    return {x,y,angle:Math.atan2(dy,dx)};
+  }
+
+  // ── NEW PHASE SEQUENCE ──
+  // Total loop: 5.2 s — feels spacious, not rushed
+  const DUR = 5.2;
+  //                  [start, end]  — all in normalised 0→1
+  const P = {
+    // Phase 1: Doc + wordmark rise in TOGETHER (0 → 0.18)
+    intro:     [0,      0.18],
+    // Phase 2: Hold — both visible together (0.18 → 0.34)
+    hold:      [0.18,   0.34],
+    // Phase 3: Doc folds while wordmark STAYS (0.34 → 0.54)
+    fold:      [0.34,   0.54],
+    // Phase 4: Plane launches + flies (0.50 → 0.78)
+    planeIn:   [0.50,   0.58],
+    planeFly:  [0.54,   0.80],
+    planeOut:  [0.77,   0.86],
+    // Phase 5: Wordmark fades OUT as plane flies away (0.58 → 0.78)
+    wordFade:  [0.58,   0.78],
+    // Phase 6: blank pause before loop (0.86 → 1.0)
+  };
+
+  let startTime=null, wobbleT=0;
+  let soundFired=false; // fire whoosh once per loop cycle
+
+  function tick(now){
+    if(!startTime) startTime=now;
+    const elapsed=(now-startTime)/1000;
+    const T=(elapsed%DUR)/DUR;
+
+    // Reset sound flag at start of each loop
+    if(elapsed%DUR < 0.05) soundFired=false;
+
+    cx.clearRect(0,0,CW,CH);
+
+    // ── Phase 1+2: intro — doc AND wordmark rise in together ──
+    const introP = easeOutBack(ph(T,...P.intro));
+    const introRise = (1-introP)*14;
+
+    // Doc alpha: rises in → holds → fades during fold
+    const foldP = easeIO(ph(T,...P.fold));
+    let docAlpha;
+    if(T < P.intro[0])       docAlpha = 0;
+    else if(T < P.hold[1])   docAlpha = introP;
+    else if(T < P.fold[1])   docAlpha = easeOut(1-ph(T,...P.fold));
+    else                     docAlpha = 0;
+
+    // Line detail fades early into fold
+    const lineAlpha = T < 0.28 ? 1 : easeOut(1-ph(T, 0.28, 0.42));
+
+    if(docAlpha > .005){
+      cx.save();
+      cx.translate(0, introRise);
+      drawDoc(docAlpha, lineAlpha, foldP);
+      cx.restore();
+    }
+
+    // ── Wordmark alphas ──
+    // Lead + Form + tagline all come in together in intro
+    // Then fade out during wordFade phase
+    let wBase;
+    if(T < P.intro[0])        wBase = 0;
+    else if(T < P.hold[1])    wBase = introP;
+    else if(T < P.wordFade[0])wBase = 1;
+    else if(T < P.wordFade[1])wBase = easeOut(1-ph(T,...P.wordFade));
+    else                      wBase = 0;
+
+    if(wBase > .005){
+      cx.save();
+      cx.translate(0, introRise * (T < P.hold[0] ? 1 : 0));
+      drawWordmark(wBase, wBase, wBase * (T < P.wordFade[0] ? 1 : 0.4));
+      cx.restore();
+    }
+
+    // ── Plane ──
+    const flyP   = easeIO(ph(T,...P.planeFly));
+    const pInA   = easeOut(ph(T,...P.planeIn));
+    const pOutA  = easeOut(ph(T,...P.planeOut));
+    let pAlpha;
+    if(T < P.planeIn[0])       pAlpha=0;
+    else if(T < P.planeIn[1])  pAlpha=pInA;
+    else if(T < P.planeOut[0]) pAlpha=1;
+    else if(T < P.planeOut[1]) pAlpha=1-pOutA;
+    else                       pAlpha=0;
+
+    wobbleT+=0.075;
+
+    if(pAlpha>.005){
+      // Fire whoosh sound once when plane first appears
+      if(!soundFired && T >= P.planeIn[0] && T < P.planeFly[0]+0.04){
+        soundFired=true;
+        sndWhoosh();
+      }
+      const pos=bezier(flyP);
+      trailPts.push({x:pos.x,y:pos.y});
+      if(trailPts.length>42) trailPts.shift();
+      drawTrail(pAlpha);
+      drawPlane(pos.x,pos.y,pos.angle,pAlpha,wobbleT);
+    } else {
+      if(T < P.planeIn[0] || T > P.planeOut[1]+.02) trailPts.length=0;
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}());
+
+
+// ─────────────────────────────────────────
+//  Aurora background
+// ─────────────────────────────────────────
+(function(){
+  const cv=document.getElementById('auroraCanvas');
+  const ctx=cv.getContext('2d');
+  const resize=()=>{cv.width=innerWidth;cv.height=innerHeight;};
+  resize(); window.addEventListener('resize',resize,{passive:true});
   const LB=[
-    {x:.2,y:.4,rx:.5,ry:.4,r:0,vr:.000025,vx:.000015,vy:.000012,color:'rgba(180,140,255,'},
-    {x:.7,y:.6,rx:.45,ry:.42,r:1.1,vr:-.000020,vx:-.000014,vy:.000016,color:'rgba(80,200,200,'},
-    {x:.5,y:.2,rx:.42,ry:.36,r:2.2,vr:.000022,vx:.000011,vy:.000018,color:'rgba(255,160,120,'},
-    {x:.3,y:.8,rx:.38,ry:.32,r:3.5,vr:-.000018,vx:.000020,vy:-.000013,color:'rgba(100,220,160,'},
+    {x:.2,y:.4,rx:.5,ry:.4,r:0,   vr:.000025,vx:.000015,vy:.000012,c:'rgba(26,108,246,'},
+    {x:.7,y:.6,rx:.45,ry:.42,r:1.1,vr:-.00002, vx:-.000014,vy:.000016,c:'rgba(58,191,248,'},
+    {x:.5,y:.2,rx:.42,ry:.36,r:2.2,vr:.000022,vx:.000011,vy:.000018,c:'rgba(170,130,255,'},
+    {x:.3,y:.8,rx:.38,ry:.32,r:3.5,vr:-.000018,vx:.00002, vy:-.000013,c:'rgba(80,210,190,'},
   ];
   const DB=[
-    {x:.2,y:.4,rx:.5,ry:.4,r:0,vr:.000025,vx:.000015,vy:.000012,color:'rgba(100,40,180,'},
-    {x:.7,y:.6,rx:.45,ry:.42,r:1.1,vr:-.000020,vx:-.000014,vy:.000016,color:'rgba(20,120,140,'},
-    {x:.5,y:.2,rx:.42,ry:.36,r:2.2,vr:.000022,vx:.000011,vy:.000018,color:'rgba(160,60,40,'},
-    {x:.3,y:.8,rx:.38,ry:.32,r:3.5,vr:-.000018,vx:.000020,vy:-.000013,color:'rgba(20,140,80,'},
+    {x:.2,y:.4,rx:.5,ry:.4,r:0,   vr:.000025,vx:.000015,vy:.000012,c:'rgba(10,37,64,'},
+    {x:.7,y:.6,rx:.45,ry:.42,r:1.1,vr:-.00002, vx:-.000014,vy:.000016,c:'rgba(20,70,120,'},
+    {x:.5,y:.2,rx:.42,ry:.36,r:2.2,vr:.000022,vx:.000011,vy:.000018,c:'rgba(80,30,140,'},
+    {x:.3,y:.8,rx:.38,ry:.32,r:3.5,vr:-.000018,vx:.00002, vy:-.000013,c:'rgba(15,100,90,'},
   ];
   let t=0;
-  function draw(){
-    const W=canvas.width,H=canvas.height;
-    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-    const blobs=isDark?DB:LB; const alpha=isDark?.38:.26;
+  (function draw(){
+    const W=cv.width,H=cv.height;
+    const dk=document.documentElement.getAttribute('data-theme')==='dark';
+    const blobs=dk?DB:LB, al=dk?.28:.17;
     ctx.clearRect(0,0,W,H);
     blobs.forEach(b=>{
-      const cx=(b.x+Math.sin(t*b.vx*1000+b.r)*.18)*W;
-      const cy=(b.y+Math.cos(t*b.vy*1000+b.r)*.15)*H;
-      const angle=b.r+t*b.vr*1000;
+      const bx=(b.x+Math.sin(t*b.vx*1000+b.r)*.18)*W;
+      const by=(b.y+Math.cos(t*b.vy*1000+b.r)*.15)*H;
+      const an=b.r+t*b.vr*1000;
       const rx=b.rx*W*(.9+.1*Math.sin(t*.0003+b.r));
       const ry=b.ry*H*(.9+.1*Math.cos(t*.0004+b.r));
-      ctx.save();ctx.translate(cx,cy);ctx.rotate(angle);
-      const grad=ctx.createRadialGradient(0,0,0,0,0,Math.max(rx,ry));
-      grad.addColorStop(0,b.color+alpha+')');
-      grad.addColorStop(.5,b.color+(alpha*.5)+')');
-      grad.addColorStop(1,b.color+'0)');
+      ctx.save();ctx.translate(bx,by);ctx.rotate(an);
+      const g=ctx.createRadialGradient(0,0,0,0,0,Math.max(rx,ry));
+      g.addColorStop(0,b.c+al+')'); g.addColorStop(.5,b.c+(al*.5)+')'); g.addColorStop(1,b.c+'0)');
       ctx.scale(1,ry/rx);ctx.beginPath();ctx.arc(0,0,rx,0,Math.PI*2);
-      ctx.fillStyle=grad;ctx.fill();ctx.restore();
+      ctx.fillStyle=g;ctx.fill();ctx.restore();
     });
     t++;requestAnimationFrame(draw);
-  }
-  draw();
-})();
+  }());
+}());
 
-// Floating particles
-const PC=['#f4c430','#e74c3c','#3498db','#2ecc71','#9b59b6','#e67e22'];
-for(let i=0;i<12;i++){
-  const p=document.createElement('div');p.className='particle';
-  const size=4+Math.random()*6;
-  p.style.cssText=`width:${size}px;height:${size}px;background:${PC[i%PC.length]};left:${Math.random()*100}vw;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*8}s;opacity:.5`;
+// ─────────────────────────────────────────
+//  Floating particles
+// ─────────────────────────────────────────
+['#1a6cf6','#3abff8','#0a2540','#6ea8fe','#93d4f8','#1353b8'].forEach(c=>{
+  const p=document.createElement('div'); p.className='particle';
+  const s=3+Math.random()*5;
+  p.style.cssText=`width:${s}px;height:${s}px;background:${c};left:${Math.random()*100}vw;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*8}s;opacity:.4`;
   document.body.appendChild(p);
-}
+});
 
-// Spotlight
+// ─────────────────────────────────────────
+//  Cursor + spotlight
+// ─────────────────────────────────────────
+const dot=document.getElementById('cursorDot');
+const ring=document.getElementById('cursorRing');
 const sp=document.getElementById('spotlight');
+let mx=0,my=0,rx=0,ry=0;
+
 document.addEventListener('mousemove',e=>{
-  if(sp) sp.style.background=`radial-gradient(circle 280px at ${e.clientX}px ${e.clientY}px,rgba(255,255,255,0.07) 0%,transparent 70%)`;
-  dot.style.opacity='1';ring.style.opacity='1';
-  setDot(e.clientX,e.clientY);
+  mx=e.clientX; my=e.clientY;
+  dot.style.opacity='1'; ring.style.opacity='1';
+  dot.style.transform=`translate3d(${mx-4}px,${my-4}px,0)`;
+  sp.style.background=`radial-gradient(circle 300px at ${mx}px ${my}px,rgba(26,108,246,.07) 0%,transparent 70%)`;
 },{passive:true});
 
-// Cursor
-const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-function setDot(x,y){dot.style.transform=`translate3d(${x-4}px,${y-4}px,0)`;}
-function setRing(x,y){ring.style.transform=`translate3d(${x-18}px,${y-18}px,0)`;}
-(function lr(){rx+=(mx-rx)*.15;ry+=(my-ry)*.15;setRing(rx,ry);requestAnimationFrame(lr);})();
+(function lag(){
+  rx+=(mx-rx)*.15; ry+=(my-ry)*.15;
+  ring.style.transform=`translate3d(${rx-18}px,${ry-18}px,0)`;
+  requestAnimationFrame(lag);
+}());
+
 document.querySelectorAll('a,button').forEach(el=>{
   el.addEventListener('mouseenter',()=>ring.classList.add('hovering'));
   el.addEventListener('mouseleave',()=>ring.classList.remove('hovering'));
@@ -212,12 +535,110 @@ document.querySelectorAll('a,button').forEach(el=>{
 document.addEventListener('mousedown',()=>dot.classList.add('clicking'));
 document.addEventListener('mouseup',()=>dot.classList.remove('clicking'));
 
-// Ripple on button
+// ─────────────────────────────────────────
+//  Button ripple
+// ─────────────────────────────────────────
 document.getElementById('homeBtn').addEventListener('click',function(e){
-  const r=document.createElement('span');r.className='ripple';
-  const rect=this.getBoundingClientRect();
-  r.style.left=(e.clientX-rect.left)+'px';r.style.top=(e.clientY-rect.top)+'px';
-  this.appendChild(r);setTimeout(()=>r.remove(),600);
+  const r=document.createElement('span'); r.className='ripple';
+  const b=this.getBoundingClientRect();
+  r.style.left=(e.clientX-b.left)+'px'; r.style.top=(e.clientY-b.top)+'px';
+  this.appendChild(r); setTimeout(()=>r.remove(),600);
+});
+
+// ─────────────────────────────────────────
+//  Sound engine
+// ─────────────────────────────────────────
+let _ac=null, sndOn=true;
+function getAC(){
+  if(!_ac) _ac=new(window.AudioContext||window.webkitAudioContext)();
+  // Resume if suspended (browser autoplay policy)
+  if(_ac.state==='suspended') _ac.resume();
+  return _ac;
+}
+
+function snd(t){
+  if(!sndOn) return;
+  try{
+    const c=getAC(),n=c.currentTime,o=c.createOscillator(),g=c.createGain();
+    o.connect(g); g.connect(c.destination);
+    if(t==='click'){
+      o.type='sine';
+      o.frequency.setValueAtTime(520,n);
+      o.frequency.exponentialRampToValueAtTime(300,n+.07);
+      g.gain.setValueAtTime(.08,n); g.gain.exponentialRampToValueAtTime(.001,n+.09);
+      o.start(n); o.stop(n+.09);
+    }
+  }catch(e){}
+}
+
+// ── Dedicated paper plane launch whoosh ──
+// Layered: low rumble + high airy sweep + quick pop at launch
+function sndWhoosh(){
+  if(!sndOn) return;
+  try{
+    const c=getAC(), n=c.currentTime;
+
+    // Layer 1: low rumble (burst of air)
+    const o1=c.createOscillator(), g1=c.createGain();
+    const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=320;
+    o1.type='sawtooth';
+    o1.frequency.setValueAtTime(180,n); o1.frequency.exponentialRampToValueAtTime(55,n+.55);
+    g1.gain.setValueAtTime(.0,n); g1.gain.linearRampToValueAtTime(.07,n+.04);
+    g1.gain.exponentialRampToValueAtTime(.001,n+.58);
+    o1.connect(lp); lp.connect(g1); g1.connect(c.destination);
+    o1.start(n); o1.stop(n+.6);
+
+    // Layer 2: high airy sweep (paper cutting through air)
+    const o2=c.createOscillator(), g2=c.createGain();
+    const hp=c.createBiquadFilter(); hp.type='bandpass'; hp.frequency.value=2800; hp.Q.value=0.6;
+    o2.type='sawtooth';
+    o2.frequency.setValueAtTime(900,n); o2.frequency.exponentialRampToValueAtTime(260,n+.45);
+    g2.gain.setValueAtTime(.0,n); g2.gain.linearRampToValueAtTime(.04,n+.03);
+    g2.gain.exponentialRampToValueAtTime(.001,n+.48);
+    o2.connect(hp); hp.connect(g2); g2.connect(c.destination);
+    o2.start(n); o2.stop(n+.5);
+
+    // Layer 3: brief tonal pop at moment of launch (the "fold snap")
+    const o3=c.createOscillator(), g3=c.createGain();
+    o3.type='sine';
+    o3.frequency.setValueAtTime(440,n); o3.frequency.exponentialRampToValueAtTime(220,n+.12);
+    g3.gain.setValueAtTime(.1,n); g3.gain.exponentialRampToValueAtTime(.001,n+.14);
+    o3.connect(g3); g3.connect(c.destination);
+    o3.start(n); o3.stop(n+.15);
+
+    // Layer 4: faint doppler-fade tail
+    const o4=c.createOscillator(), g4=c.createGain();
+    const lp2=c.createBiquadFilter(); lp2.type='lowpass'; lp2.frequency.value=600;
+    o4.type='triangle';
+    o4.frequency.setValueAtTime(520,n+.1); o4.frequency.exponentialRampToValueAtTime(120,n+.7);
+    g4.gain.setValueAtTime(.0,n+.1); g4.gain.linearRampToValueAtTime(.035,n+.18);
+    g4.gain.exponentialRampToValueAtTime(.001,n+.72);
+    o4.connect(lp2); lp2.connect(g4); g4.connect(c.destination);
+    o4.start(n+.1); o4.stop(n+.75);
+
+  }catch(e){}
+}
+
+function toggleSnd(){
+  sndOn=!sndOn;
+  document.getElementById('sndBtn').textContent=sndOn?'🔊':'🔇';
+}
+
+// Unlock AudioContext on first user interaction (browser policy)
+document.addEventListener('click', ()=>getAC(), {once:true});
+document.addEventListener('touchstart', ()=>getAC(), {once:true, passive:true});
+
+// Click sound on button
+document.getElementById('homeBtn').addEventListener('mousedown',()=>snd('click'));
+
+// ─────────────────────────────────────────
+//  Keyboard shortcut — Enter/Space to go home
+// ─────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.key===' ')&&!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)){
+    snd('click');
+    window.location.href='index.html';
+  }
 });
 </script>
 </body>
