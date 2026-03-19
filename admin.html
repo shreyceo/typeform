@@ -471,7 +471,23 @@ async function loadLeads() {
     } else {
       const res = await fetch(SHEET_READ_URL + '?action=getLeads&t=' + Date.now());
       const data = await res.json();
-      allLeads = (data.leads || []).filter(l => l.name || l.email);
+      allLeads = (data.leads || []).filter(l => l.name || l.email).map(l => ({
+        ...l,
+        name:        String(l.name        || ''),
+        email:       String(l.email       || ''),
+        phone:       String(l.phone       || ''),
+        company:     String(l.company     || ''),
+        interest:    String(l.interest    || ''),
+        budget:      String(l.budget      || ''),
+        message:     String(l.message     || ''),
+        lead_score:  String(l.lead_score  || ''),
+        utm_source:  String(l.utm_source  || 'direct'),
+        utm_medium:  String(l.utm_medium  || ''),
+        utm_campaign:String(l.utm_campaign|| ''),
+        referrer:    String(l.referrer    || ''),
+        language:    String(l.language    || ''),
+        timestamp:   String(l.timestamp   || ''),
+      }));
       document.getElementById('liveTag').style.display = 'inline-flex';
     }
     updateStats();
@@ -501,7 +517,7 @@ function generateDemo(n) {
     const name=names[i%names.length];
     const d=new Date(); d.setDate(d.getDate()-Math.floor(Math.random()*30));
     return {timestamp:d.toISOString(),name,email:name.split(' ')[0].toLowerCase()+(i+1)+'@example.com',
-      phone:'+91 9'+Math.floor(100000000+Math.random()*900000000),company:cos[i%cos.length],
+      phone:String('+91 9'+Math.floor(100000000+Math.random()*900000000)),company:cos[i%cos.length],
       interest:ints[Math.floor(Math.random()*ints.length)],budget:buds[Math.floor(Math.random()*buds.length)],
       message:i%3===0?'Looking to scale operations and need a good solution.':'',
       lead_score:scores[Math.floor(Math.random()*scores.length)],utm_source:srcs[Math.floor(Math.random()*srcs.length)],
@@ -639,7 +655,7 @@ function renderTable() {
         <a class="row-btn" href="mailto:${email}?subject=Following up on your enquiry&body=Hi ${esc(l.name?.split(' ')[0]||'')}," title="Email lead">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         </a>
-        ${l.phone?`<a class="row-btn" href="https://wa.me/${(l.phone||'').replace(/[^0-9]/g,'')}" target="_blank" title="WhatsApp">
+        ${l.phone?`<a class="row-btn" href="https://wa.me/${String(l.phone||'').replace(/[^0-9]/g,'')}" target="_blank" title="WhatsApp">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
         </a>`:''}
       </div></td>
@@ -718,7 +734,7 @@ function openModal(idx) {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       Email Lead
     </a>
-    ${l.phone?`<a class="modal-btn secondary" href="https://wa.me/${(l.phone||'').replace(/[^0-9]/g,'')}" target="_blank">
+    ${l.phone?`<a class="modal-btn secondary" href="https://wa.me/${String(l.phone||'').replace(/[^0-9]/g,'')}" target="_blank">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
       WhatsApp
     </a>`:''}
