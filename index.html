@@ -396,13 +396,14 @@ const _urlParams = new URLSearchParams(window.location.search);
 const TENANT_ID  = (_urlParams.get('t') || '').toLowerCase().trim();
 
 // Read branding directly from URL — falls back to defaults if not present
-const TENANT = {
+window.TENANT = {
   brandName:    _urlParams.get('brand')   || 'LeadForm',
   primaryColor: _urlParams.get('color')   || '#1a1708',
   accentColor:  _urlParams.get('accent')  || '#1a6cf6',
   tagline:      _urlParams.get('tagline') || "Let's talk\nbusiness.",
   teamMembers:  [],
 };
+const TENANT = window.TENANT;
 
 // Scope all localStorage keys per tenant so two clients never share data
 const lsKey = (k) => TENANT_ID ? TENANT_ID + '_' + k : k;
@@ -425,10 +426,6 @@ function bootstrapTenant() {
 
   // Update page title
   document.title = 'Get in Touch — ' + TENANT.brandName;
-
-  // Update typewriter text — must happen before startTypewriter() is called
-  TRANSLATIONS.en.welcomeTitleTyped = TENANT.tagline;
-  TRANSLATIONS.en.welcomeTitle      = TENANT.tagline.replace('\n', ' ');
 
   return true;
 }
@@ -716,8 +713,12 @@ function bootstrapTenant() {
 // ══════════════════════════════════════════════
 const TRANSLATIONS = {
   en: {
-    welcomeTitle: "Let's talk business.",
-    welcomeTitleTyped: "Let's talk\nbusiness.",
+    welcomeTitle:      (window.TENANT && window.TENANT.tagline)
+                         ? window.TENANT.tagline.replace('\n', ' ')
+                         : "Let's talk business.",
+    welcomeTitleTyped: (window.TENANT && window.TENANT.tagline)
+                         ? window.TENANT.tagline
+                         : "Let's talk\nbusiness.",
   },
   hi: {
     welcomeTitle: "आइए बात करें।",
