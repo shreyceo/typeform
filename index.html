@@ -404,6 +404,26 @@ let TENANT = {
 // Scope all localStorage keys per tenant so two clients never share data
 const lsKey = (k) => TENANT_ID ? TENANT_ID + '_' + k : k;
 
+// JSONP loader — sidesteps CORS restriction on GitHub Pages
+// Apps Script doesn't send CORS headers, so fetch() is blocked.
+// JSONP injects a <script> tag instead — no CORS restriction applies.
+function fetchJSONP(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_lfjsonp_' + Date.now();
+    const script = document.createElement('script');
+    const timer  = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 8000);
+    function cleanup() {
+      clearTimeout(timer);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+    window[cbName] = (data) => { cleanup(); resolve(data); };
+    script.src     = url + '&callback=' + cbName;
+    script.onerror = () => { cleanup(); reject(new Error('load error')); };
+    document.head.appendChild(script);
+  });
+}
+
 async function bootstrapTenant() {
   // No tenant in URL — show a clear error instead of a broken form
   if (!TENANT_ID) {
@@ -413,8 +433,9 @@ async function bootstrapTenant() {
   }
 
   try {
-    const res = await fetch(APPS_SCRIPT_URL + '?action=getConfig&tenantId=' + encodeURIComponent(TENANT_ID));
-    const cfg = await res.json();
+    const cfg = await fetchJSONP(
+      APPS_SCRIPT_URL + '?action=getConfig&tenantId=' + encodeURIComponent(TENANT_ID)
+    );
     if (cfg.error) throw new Error(cfg.error);
 
     // Merge remote config over defaults
@@ -423,9 +444,9 @@ async function bootstrapTenant() {
     // Apply brand colors as CSS custom properties
     const r = document.documentElement;
     if (TENANT.primaryColor) {
-      r.style.setProperty('--btn-bg',       TENANT.primaryColor);
-      r.style.setProperty('--text-primary', TENANT.primaryColor);
-      r.style.setProperty('--progress-fill',TENANT.primaryColor);
+      r.style.setProperty('--btn-bg',        TENANT.primaryColor);
+      r.style.setProperty('--text-primary',  TENANT.primaryColor);
+      r.style.setProperty('--progress-fill', TENANT.primaryColor);
     }
     if (TENANT.accentColor) {
       r.style.setProperty('--lb1', TENANT.accentColor);
