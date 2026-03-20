@@ -386,45 +386,28 @@ body{height:100%;height:-webkit-fill-available;height:100dvh;overflow:hidden;fon
 
 <script>
 // ── Multi-tenant bootstrap ──────────────────────────────────────
+// Branding is carried in the URL params — no external fetch needed.
+// Super-admin generates URLs like:
+//   ?t=acme&brand=Acme+Inc&color=%231a1708&accent=%231a6cf6&tagline=Let%27s+talk
+// Apps Script URL is only used for submitting leads (no-cors POST — always works).
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylbcFyqqytD-F12NIFNAbGgoR3Q1erVW4kShLDCuPR0nImpbEVdBacHKs_Jc4jvXtUgQ/exec';
 
-// Read ?t=tenantId from URL — works for yoursite.com/index.html?t=acme
-const _urlParams  = new URLSearchParams(window.location.search);
-const TENANT_ID   = (_urlParams.get('t') || '').toLowerCase().trim();
+const _urlParams = new URLSearchParams(window.location.search);
+const TENANT_ID  = (_urlParams.get('t') || '').toLowerCase().trim();
 
-// Tenant config — defaults shown until getConfig responds
-let TENANT = {
-  brandName:    'LeadForm',
-  primaryColor: '#1a1708',
-  accentColor:  '#1a6cf6',
-  tagline:      "Let's talk\nbusiness.",
+// Read branding directly from URL — falls back to defaults if not present
+const TENANT = {
+  brandName:    _urlParams.get('brand')   || 'LeadForm',
+  primaryColor: _urlParams.get('color')   || '#1a1708',
+  accentColor:  _urlParams.get('accent')  || '#1a6cf6',
+  tagline:      _urlParams.get('tagline') || "Let's talk\nbusiness.",
   teamMembers:  [],
 };
 
 // Scope all localStorage keys per tenant so two clients never share data
 const lsKey = (k) => TENANT_ID ? TENANT_ID + '_' + k : k;
 
-// JSONP loader — sidesteps CORS restriction on GitHub Pages
-// Apps Script doesn't send CORS headers, so fetch() is blocked.
-// JSONP injects a <script> tag instead — no CORS restriction applies.
-function fetchJSONP(url) {
-  return new Promise((resolve, reject) => {
-    const cbName = '_lfjsonp_' + Date.now();
-    const script = document.createElement('script');
-    const timer  = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 8000);
-    function cleanup() {
-      clearTimeout(timer);
-      delete window[cbName];
-      if (script.parentNode) script.parentNode.removeChild(script);
-    }
-    window[cbName] = (data) => { cleanup(); resolve(data); };
-    script.src     = url + '&callback=' + cbName;
-    script.onerror = () => { cleanup(); reject(new Error('load error')); };
-    document.head.appendChild(script);
-  });
-}
-
-async function bootstrapTenant() {
+function bootstrapTenant() {
   // No tenant in URL — show a clear error instead of a broken form
   if (!TENANT_ID) {
     document.body.style.cssText = 'display:flex;align-items:center;justify-content:center;height:100vh;font-family:DM Sans,sans-serif;background:#f5f0e8;color:#1a1708;text-align:center;padding:24px';
@@ -432,41 +415,21 @@ async function bootstrapTenant() {
     return false;
   }
 
-  try {
-    const cfg = await fetchJSONP(
-      APPS_SCRIPT_URL + '?action=getConfig&tenantId=' + encodeURIComponent(TENANT_ID)
-    );
-    if (cfg.error) throw new Error(cfg.error);
+  // Apply brand colors as CSS custom properties
+  const r = document.documentElement;
+  r.style.setProperty('--btn-bg',        TENANT.primaryColor);
+  r.style.setProperty('--text-primary',  TENANT.primaryColor);
+  r.style.setProperty('--progress-fill', TENANT.primaryColor);
+  r.style.setProperty('--lb1',           TENANT.accentColor);
+  r.style.setProperty('--lb2',           TENANT.accentColor);
 
-    // Merge remote config over defaults
-    Object.assign(TENANT, cfg);
+  // Update page title
+  document.title = 'Get in Touch — ' + TENANT.brandName;
 
-    // Apply brand colors as CSS custom properties
-    const r = document.documentElement;
-    if (TENANT.primaryColor) {
-      r.style.setProperty('--btn-bg',        TENANT.primaryColor);
-      r.style.setProperty('--text-primary',  TENANT.primaryColor);
-      r.style.setProperty('--progress-fill', TENANT.primaryColor);
-    }
-    if (TENANT.accentColor) {
-      r.style.setProperty('--lb1', TENANT.accentColor);
-      r.style.setProperty('--lb2', TENANT.accentColor);
-    }
+  // Update typewriter text — must happen before startTypewriter() is called
+  TRANSLATIONS.en.welcomeTitleTyped = TENANT.tagline;
+  TRANSLATIONS.en.welcomeTitle      = TENANT.tagline.replace('\n', ' ');
 
-    // Update page title with brand name
-    document.title = 'Get in Touch — ' + TENANT.brandName;
-
-    // Update TRANSLATIONS so typewriter uses tenant tagline
-    TRANSLATIONS.en.welcomeTitleTyped = TENANT.tagline || "Let's talk\nbusiness.";
-    TRANSLATIONS.en.welcomeTitle      = (TENANT.tagline || "Let's talk\nbusiness.").replace('\n', ' ');
-
-  } catch (e) {
-    // Tenant not found or network error — show clean error
-    console.warn('Tenant config failed:', e.message);
-    document.body.style.cssText = 'display:flex;align-items:center;justify-content:center;height:100vh;font-family:DM Sans,sans-serif;background:#f5f0e8;color:#1a1708;text-align:center;padding:24px';
-    document.body.innerHTML = '<div><div style="font-size:32px;margin-bottom:12px">⚠️</div><div style="font-size:18px;font-weight:600;margin-bottom:8px">Form not found</div><div style="font-size:14px;opacity:.6">The link you followed may be incorrect or expired.</div></div>';
-    return false;
-  }
   return true;
 }
 </script>
@@ -1490,9 +1453,9 @@ function animateQNumber(slideEl, newNum) {
 })();
 
 // ── Init — tenant bootstrap runs first, then everything else ──
-(async () => {
-  const ok = await bootstrapTenant();
-  if (!ok) return; // tenant not found — error screen already shown
+(function () {
+  const ok = bootstrapTenant();
+  if (!ok) return; // no tenant — error screen already shown
 
   initLotties();
   initCanvasBg();
